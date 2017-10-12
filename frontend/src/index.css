@@ -1,5 +1,72 @@
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: 'Roboto', sans-serif;
+}
+
+
+
+/* BOOK LIST COMPONENT */
+.c_BookDetails{
+  height: 270px;
+}
+.c_BookDetails  img{
+  height: 200px;
+  width: 138px;
+}
+
+.book-shelf-changer {
+  position: absolute;
+  top: 174px;
+  right: 50%;
+  margin-right: -78px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #3f70ac;
+  /*background-image: url('./icons/arrow-drop-down.svg');*/
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+.book-shelf-changer select {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  margin-top: -7px;
+  margin-left: 5px;
+}
+
+.bd-sidebar {
+  position: fixed;
+  width: inherit;
+  margin-top: 70px;
+  border-right: 1px solid rgba(0, 0, 0, .1);
+  background-color: #32383e;
+}
+
+.bd-sidebar nav .nav-link {
+  color: #c8c8c8;
+}
+
+.bd-sidebar nav .nav-item {
+  border: 1px solid rgba(0, 0, 0, 0.6);
+}
+
+.bd-sidebar nav .nav-link.active {
+  color: #c8c8c8;
+  font-size: 100%;
+  font-weight: 500;
+}
+
+.bd-sidebar nav .nav-link:hover {
+  color: #ececec;
 }
