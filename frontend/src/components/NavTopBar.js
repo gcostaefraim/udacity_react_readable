@@ -11,15 +11,7 @@ const NavTopBar = () => (
 )
 export default NavTopBar
 
-
-
-
-
 const TopBar = styled.div `
-    margin-left: 220px;
-    position: absolute;
-    right: 0;
-    left: 0;
-    height: 50px;
+    height: 100%;
     background-color: green;
 `;

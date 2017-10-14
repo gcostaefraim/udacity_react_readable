@@ -8,9 +8,11 @@ const NavSideBar = () => (
         <List>
             <Item>
                 <ItemLink href='#'>Canal 1</ItemLink>
-            </Item>            <Item>
+            </Item>
+            <Item>
                 <ItemLink href='#'>Canal 2</ItemLink>
-            </Item>            <Item>
+            </Item>
+            <Item>
                 <ItemLink href='#'>Canal 3</ItemLink>
             </Item>
         </List>
@@ -20,16 +22,14 @@ export default NavSideBar
 
 
 const Sidebar = styled.div `
-    width: 220px;
-    position: absolute;
-    top: 0;
-    bottom: 0;
     background-color: #563d7c;
+    height: 100%;
 `;
 
 const List = styled.ul `
     padding-left: 0;
     margin-bottom: 0;
+    margin-top: 0;
     list-style: none;
 `;
 
@@ -44,9 +44,7 @@ const ItemLink = styled.a `
     text-decoration: none !important;
     color: #eeeeee !important;
     
-    /* pseudo selectors work as well */
     &:hover {
         background-color: #2e274e;
-		/*background: palevioletred;*/
 	}
 `;

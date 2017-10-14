@@ -4,28 +4,27 @@ import './App.css';
 
 import NavTopBar from './components/NavTopBar'
 import NavSideBar from './components/NavSideBar'
+import BodyApp from './components/BodyApp'
 
 class App extends Component {
     render() {
         return (
 
-            <div className="app">
-                <NavTopBar/>
-                <NavSideBar/>
+            <div id="wrapper">
+                <aside id="sidebar">
+                    <NavSideBar/>
+                </aside>
 
+                <main id="main">
+                    <header id="header">
+                        <NavTopBar/>
+                    </header>
 
-                <div style={{
-                    marginLeft: 220,
-                    marginTop: 50,
-                    position: 'absolute',
-                    top: 0,
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    backgroundColor: 'yellow'
-                }}>
-                    BODY DO APP
-                </div>
+                    <section id="content">
+                        <BodyApp>ABC</BodyApp>
+                    </section>
+
+                </main>
             </div>
 
         );
