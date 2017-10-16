@@ -1,11 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 import ListComments from './ListComments'
+import {Route} from 'react-router-dom';
 
 const BodyApp = (props) => (
     <Body>
-    <ListComments/>
-    {props.children}
+    <Route path={"/abc/:chanel"} component={ListComments} />
     </Body>
 )
 export default BodyApp

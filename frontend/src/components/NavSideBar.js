@@ -1,19 +1,19 @@
 import React from 'react'
 import styled from 'styled-components'
-// import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 
 
 const NavSideBar = () => (
     <Sidebar>
         <List>
             <Item>
-                <ItemLink href='#'>Canal 1</ItemLink>
+                <ItemLink to="/abc/10">Canal 1</ItemLink>
             </Item>
             <Item>
-                <ItemLink href='#'>Canal 2</ItemLink>
+                <ItemLink to="/abc/200">Canal 2</ItemLink>
             </Item>
             <Item>
-                <ItemLink href='#'>Canal 3</ItemLink>
+                <ItemLink to="/abc/900">Canal 3</ItemLink>
             </Item>
         </List>
     </Sidebar>
@@ -37,7 +37,7 @@ const Item = styled.li `
     position: relative;
     display: block;
 `;
-const ItemLink = styled.a `
+const ItemLink = styled(Link) `
     position: relative;
     display: block;
     padding: 10px 15px;
