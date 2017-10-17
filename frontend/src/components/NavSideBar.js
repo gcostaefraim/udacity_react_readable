@@ -1,23 +1,45 @@
-import React from 'react'
+import React, {Component} from 'react'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
+import * as CategoriesAPI from '../utils/CategoriesAPI'
 
 
-const NavSideBar = () => (
-    <Sidebar>
-        <List>
-            <Item>
-                <ItemLink to="/abc/10">Canal 1</ItemLink>
-            </Item>
-            <Item>
-                <ItemLink to="/abc/200">Canal 2</ItemLink>
-            </Item>
-            <Item>
-                <ItemLink to="/abc/900">Canal 3</ItemLink>
-            </Item>
-        </List>
-    </Sidebar>
-)
+class NavSideBar extends Component {
+
+    constructor(){
+        super();
+
+        this.state = {
+            categories: []
+        }
+    }
+
+    componentDidMount() {
+        CategoriesAPI.getAll().then((categories) => {
+            this.setState({categories})
+        })
+    }
+
+    render() {
+        return (
+            <Sidebar>
+                {console.log(this.state.categories)}
+                <List>
+                    <Item>
+                        <ItemLink to="/abc/10">All Categories</ItemLink>
+                    </Item>
+
+                    {this.state.categories.map((category) => (
+                        <Item key={category.path}>
+                            <ItemLink to={`/abc/${category.path}`}>{category.name}</ItemLink>
+                        </Item>
+                    ))}
+
+                </List>
+            </Sidebar>
+        )
+    }
+}
 export default NavSideBar
 
 
