@@ -4,11 +4,12 @@ import './index.css';
 import App from './containers/App';
 import registerServiceWorker from './registerServiceWorker';
 import {Provider} from 'react-redux'
-import configStore from './store'
+import configStore from './store/configStore'
 
 
 const store = configStore();
 
+window.store = store;
 
 ReactDOM.render(
     <Provider store={store}>

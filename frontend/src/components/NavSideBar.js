@@ -1,35 +1,41 @@
 import React, {Component} from 'react'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
-import * as CategoriesAPI from '../utils/CategoriesAPI'
+
+import {reloadCategories} from "../actions"
+import {connect} from 'react-redux'
 
 
 class NavSideBar extends Component {
 
-    constructor(){
-        super();
+    constructor(props) {
+        super(props);
 
+        // Initial state
         this.state = {
-            categories: []
+            categoriesList: []
         }
     }
 
     componentDidMount() {
-        CategoriesAPI.getAll().then((categories) => {
-            this.setState({categories})
+        this.props.reloadCategories()
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            categoriesList: nextProps.categoriesList
         })
     }
 
     render() {
         return (
             <Sidebar>
-                {console.log(this.state.categories)}
                 <List>
                     <Item>
                         <ItemLink to="/abc/10">All Categories</ItemLink>
                     </Item>
 
-                    {this.state.categories.map((category) => (
+                    {this.state.categoriesList.map((category) => (
                         <Item key={category.path}>
                             <ItemLink to={`/abc/${category.path}`}>{category.name}</ItemLink>
                         </Item>
@@ -40,9 +46,38 @@ class NavSideBar extends Component {
         )
     }
 }
-export default NavSideBar
 
 
+/*
+ * REDUX STATE
+ */
+
+function mapStateToProps({categories}) {
+    return {
+        categoriesList: categories.list
+    }
+}
+
+/*
+ * REDUX ACTIONS
+ */
+
+function mapDispatchToProps(dispatch) {
+    return {
+        reloadCategories: () => dispatch(reloadCategories()),
+    }
+}
+
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(NavSideBar)
+
+
+/*
+ * Component Style
+ */
 const Sidebar = styled.div `
     background-color: #563d7c;
     height: 100%;
