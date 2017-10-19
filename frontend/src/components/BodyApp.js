@@ -5,10 +5,16 @@ import {Route} from 'react-router-dom';
 
 const BodyApp = (props) => (
     <Body>
-    <Route path={"/abc/:chanel"} component={ListComments} />
+        <Route path={"/abc/:chanel"} component={ListComments} />
     </Body>
 )
 export default BodyApp
+
+
+
+/*
+ * Component Style
+ */
 
 const Body = styled.div `
     height: 100%;
