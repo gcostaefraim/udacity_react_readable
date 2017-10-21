@@ -2,49 +2,50 @@ import React, {Component} from 'react'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
 
-import {reloadCategories} from "../actions"
+import {reloadCategories, fetchPosts} from "../actions"
 import {connect} from 'react-redux'
 
 
 class NavSideBar extends Component {
 
-    constructor(props) {
-        super(props);
+	constructor(props) {
+		super(props);
 
-        // Initial state
-        this.state = {
-            categoriesList: []
-        }
-    }
+		// Initial state
+		this.state = {
+			categoriesList: []
+		}
+	}
 
-    componentDidMount() {
-        this.props.reloadCategories()
-    }
+	componentDidMount() {
+		// this.props.fetchPosts()
+		// this.props.reloadCategories()
+	}
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            categoriesList: nextProps.categoriesList
-        })
-    }
+	componentWillReceiveProps(nextProps) {
+		this.setState({
+			categoriesList: nextProps.categoriesList
+		})
+	}
 
-    render() {
-        return (
-            <Sidebar>
-                <List>
-                    <Item>
-                        <ItemLink to="/abc/10">All Categories</ItemLink>
-                    </Item>
+	render() {
+		return (
+			<Sidebar>
+				<List>
+					<Item>
+						<ItemLink to="/abc/10">All Categories</ItemLink>
+					</Item>
 
-                    {this.state.categoriesList.map((category) => (
-                        <Item key={category.path}>
-                            <ItemLink to={`/abc/${category.path}`}>{category.name}</ItemLink>
-                        </Item>
-                    ))}
+					{this.state.categoriesList.map((category) => (
+						<Item key={category.path}>
+							<ItemLink to={`/abc/${category.path}`}>{category.name}</ItemLink>
+						</Item>
+					))}
 
-                </List>
-            </Sidebar>
-        )
-    }
+				</List>
+			</Sidebar>
+		)
+	}
 }
 
 
@@ -53,9 +54,9 @@ class NavSideBar extends Component {
  */
 
 function mapStateToProps({categories}) {
-    return {
-        categoriesList: categories.list
-    }
+	return {
+		categoriesList: categories.list
+	}
 }
 
 /*
@@ -63,15 +64,16 @@ function mapStateToProps({categories}) {
  */
 
 function mapDispatchToProps(dispatch) {
-    return {
-        reloadCategories: () => dispatch(reloadCategories()),
-    }
+	return {
+		reloadCategories: () => dispatch(reloadCategories()),
+		fetchPosts: () => dispatch(fetchPosts()),
+	}
 }
 
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+	mapStateToProps,
+	mapDispatchToProps
 )(NavSideBar)
 
 

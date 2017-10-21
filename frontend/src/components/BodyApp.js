@@ -1,15 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
-import ListComments from './ListComments'
+import ListPosts from './ListPosts'
 import {Route} from 'react-router-dom';
 
 const BodyApp = (props) => (
-    <Body>
-        <Route path={"/abc/:chanel"} component={ListComments} />
-    </Body>
+	<Body>
+		<Route path={"/"} component={ListPosts}/>
+		<Route path={"/abc/:chanel"} component={ListPosts}/>
+	</Body>
 )
 export default BodyApp
-
 
 
 /*
