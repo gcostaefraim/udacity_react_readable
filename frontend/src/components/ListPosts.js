@@ -1,8 +1,7 @@
 import React, {Component} from 'react'
 import styled from 'styled-components'
 import {connect} from 'react-redux'
-
-import * as PostsAPI from '../utils/PostsAPI'
+import ListPostsItem from './ListPostsItem'
 
 class ListComments extends Component {
 
@@ -31,27 +30,19 @@ class ListComments extends Component {
 		const chanel = this.props.match.params.chanel;
 
 		const listPosts = Object.entries(this.state.postsList).map(([id, post]) =>
-			<div key={post.id}>
-				<div>Title: {post.title}</div>
-				<div>Author: {post.author}</div>
-				<div>Category: {post.category}</div>
-				<br/>
-			</div>
+				<ListPostsItem post={post} key={id} />
 		);
 
-
-	console.log(listPosts);
 		return (
 			<Container>
 				{chanel}
 				<List>
-					<div>PRIMEIRO POST</div>
 					{listPosts}
-					<div>ULTIMO POST</div>
+					{listPosts}
+					{listPosts}
+					{listPosts}
+					{listPosts}
 				</List>
-				<Input>
-
-				</Input>
 			</Container>
 		);
 	}
@@ -67,7 +58,6 @@ function mapStateToProps(state) {
 	}
 }
 
-
 export default connect(
 	mapStateToProps,
 )(ListComments)
@@ -79,11 +69,12 @@ const Container = styled.div `
 `;
 
 const List = styled.div `
-    background-color: #3f70ac;
-    height: calc(100% - 36px);
-    display: flex;
-    flex-direction: column;
-    overflow: auto;
+		position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow-y: auto;
+    height: calc(100% - 70px);
 `;
 const Input = styled.input `
     width: 95%;

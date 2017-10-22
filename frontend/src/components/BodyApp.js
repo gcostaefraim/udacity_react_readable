@@ -19,5 +19,4 @@ export default BodyApp
 const Body = styled.div `
     height: 100%;
     width: 100%;
-    background-color: yellow;
 `;

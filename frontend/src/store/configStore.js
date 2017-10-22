@@ -26,7 +26,7 @@ const configStore = () => {
 	)
 
 	/* === BEGIN FETCH INITIAL STATE OF APPLICATION  === */
-	// store.dispatch(reloadCategories());
+	store.dispatch(reloadCategories());
 	store.dispatch(fetchPosts());
 
 	return store;
