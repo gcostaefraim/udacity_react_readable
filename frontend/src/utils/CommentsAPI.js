@@ -8,7 +8,7 @@ const api = "https://reactnd-books-api.udacity.com"
 
 const headers = {
     'Accept': 'application/json',
-    // 'Authorization': token
+    'Authorization': '123'
 }
 
 // export const get = (bookId) =>

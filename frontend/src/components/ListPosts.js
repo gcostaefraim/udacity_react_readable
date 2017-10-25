@@ -1,26 +1,26 @@
 import React, {Component} from 'react'
 import styled from 'styled-components'
 import {connect} from 'react-redux'
-
-import * as PostsAPI from '../utils/PostsAPI'
+import ListPostsItem from './ListPostsItem'
+import sortBy from 'sort-by'
 
 class ListComments extends Component {
 
 	constructor(props) {
 		super(props);
 
-		// Initial state
 		this.state = {
-			postsList: {}
+			postsList: []
 		}
 	}
-
 
 	componentDidMount() {
 		console.log("Mounted!");
 	}
 
 	componentWillReceiveProps(nextProps) {
+		console.log('ListPost componentWillReceiveProps');
+		console.log(nextProps);
 		this.setState({
 			postsList: nextProps.postsList
 		})
@@ -30,28 +30,19 @@ class ListComments extends Component {
 
 		const chanel = this.props.match.params.chanel;
 
-		const listPosts = Object.entries(this.state.postsList).map(([id, post]) =>
-			<div key={post.id}>
-				<div>Title: {post.title}</div>
-				<div>Author: {post.author}</div>
-				<div>Category: {post.category}</div>
-				<br/>
-			</div>
+		let arrayPosts = this.state.postsList
+		arrayPosts.sort(sortBy('-voteScore'))
+
+		const listPosts = arrayPosts.map((post) =>
+			<ListPostsItem post={post} key={post.id} />
 		);
 
-
-	console.log(listPosts);
 		return (
 			<Container>
 				{chanel}
 				<List>
-					<div>PRIMEIRO POST</div>
 					{listPosts}
-					<div>ULTIMO POST</div>
 				</List>
-				<Input>
-
-				</Input>
 			</Container>
 		);
 	}
@@ -67,25 +58,12 @@ function mapStateToProps(state) {
 	}
 }
 
-
 export default connect(
 	mapStateToProps,
 )(ListComments)
 
-// export default ListComments;
-
 const Container = styled.div `
-    height: 100%;
 `;
 
 const List = styled.div `
-    background-color: #3f70ac;
-    height: calc(100% - 36px);
-    display: flex;
-    flex-direction: column;
-    overflow: auto;
-`;
-const Input = styled.input `
-    width: 95%;
-    height: 30px;
 `;
