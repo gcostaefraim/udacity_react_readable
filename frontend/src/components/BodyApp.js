@@ -5,8 +5,8 @@ import {Route} from 'react-router-dom';
 
 const BodyApp = (props) => (
 	<Body>
-		<Route path={"/"} component={ListPosts}/>
-		<Route path={"/abc/:chanel"} component={ListPosts}/>
+		<Route path={"/"} exact component={ListPosts}/>
+		<Route path={"/abc"} component={ListPosts}/>
 	</Body>
 )
 export default BodyApp
@@ -17,6 +17,6 @@ export default BodyApp
  */
 
 const Body = styled.div `
-    height: 100%;
-    width: 100%;
+    //height: 100%;
+    //width: 100%;
 `;

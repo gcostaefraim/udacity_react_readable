@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
+import {Input, Label, Menu, Icon} from 'semantic-ui-react'
 
 import {reloadCategories, fetchPosts} from "../actions"
 import {connect} from 'react-redux'
@@ -28,21 +29,41 @@ class NavSideBar extends Component {
 		})
 	}
 
+	state = {activeItem: 'inbox'}
+
+	// handleItemClick = (e, b) => console.log(e);
+	handleItemClick = (e, {name}) => this.setState({activeItem: name})
+
+	// handleItemClick = (e, {name}) => console.log(name);
+
 	render() {
+		console.log(this.context);
+
+		const {activeItem} = this.state
+
 		return (
 			<Sidebar>
-				<List>
-					<Item>
-						<ItemLink to="/abc/10">All Categories</ItemLink>
-					</Item>
+				<Menu size='large' vertical style={{border: 0, borderRadius: 0}}>
+
+					<Menu.Item>
+						<Input icon='search' placeholder='Search mail...'/>
+					</Menu.Item>
 
 					{this.state.categoriesList.map((category) => (
-						<Item key={category.path}>
-							<ItemLink to={`/abc/${category.path}`}>{category.name}</ItemLink>
-						</Item>
+						<Menu.Item
+							as={Link}
+							to={`/abc/${category.path}`}
+							name={category.name}
+							active={activeItem === category.name}
+							onClick={this.handleItemClick}
+							key={category.path}
+						>
+							{/*/!*<Icon name='home' />*!/*/}
+							<Label color='teal'>1</Label>
+							# {category.name}
+						</Menu.Item>
 					))}
-
-				</List>
+				</Menu>
 			</Sidebar>
 		)
 	}
@@ -81,29 +102,5 @@ export default connect(
  * Component Style
  */
 const Sidebar = styled.div `
-    background-color: #563d7c;
     height: 100%;
-`;
-
-const List = styled.ul `
-    padding-left: 0;
-    margin-bottom: 0;
-    margin-top: 0;
-    list-style: none;
-`;
-
-const Item = styled.li `
-    position: relative;
-    display: block;
-`;
-const ItemLink = styled(Link) `
-    position: relative;
-    display: block;
-    padding: 10px 15px;
-    text-decoration: none !important;
-    color: #eeeeee !important;
-    
-    &:hover {
-        background-color: #2e274e;
-	}
 `;

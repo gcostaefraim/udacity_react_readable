@@ -2,24 +2,25 @@ import React, {Component} from 'react'
 import styled from 'styled-components'
 import {connect} from 'react-redux'
 import ListPostsItem from './ListPostsItem'
+import sortBy from 'sort-by'
 
 class ListComments extends Component {
 
 	constructor(props) {
 		super(props);
 
-		// Initial state
 		this.state = {
-			postsList: {}
+			postsList: []
 		}
 	}
-
 
 	componentDidMount() {
 		console.log("Mounted!");
 	}
 
 	componentWillReceiveProps(nextProps) {
+		console.log('ListPost componentWillReceiveProps');
+		console.log(nextProps);
 		this.setState({
 			postsList: nextProps.postsList
 		})
@@ -29,18 +30,17 @@ class ListComments extends Component {
 
 		const chanel = this.props.match.params.chanel;
 
-		const listPosts = Object.entries(this.state.postsList).map(([id, post]) =>
-				<ListPostsItem post={post} key={id} />
+		let arrayPosts = this.state.postsList
+		arrayPosts.sort(sortBy('-voteScore'))
+
+		const listPosts = arrayPosts.map((post) =>
+			<ListPostsItem post={post} key={post.id} />
 		);
 
 		return (
 			<Container>
 				{chanel}
 				<List>
-					{listPosts}
-					{listPosts}
-					{listPosts}
-					{listPosts}
 					{listPosts}
 				</List>
 			</Container>
@@ -62,21 +62,8 @@ export default connect(
 	mapStateToProps,
 )(ListComments)
 
-// export default ListComments;
-
 const Container = styled.div `
-    height: 100%;
 `;
 
 const List = styled.div `
-		position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    overflow-y: auto;
-    height: calc(100% - 70px);
-`;
-const Input = styled.input `
-    width: 95%;
-    height: 30px;
 `;

@@ -10,6 +10,8 @@
     "react-scripts": "1.0.14",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
+    "semantic-ui-react": "^0.75.1",
+    "sort-by": "^1.2.0",
     "styled-components": "^2.2.1"
   },
   "scripts": {

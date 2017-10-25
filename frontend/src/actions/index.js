@@ -26,27 +26,32 @@ function _reloadCategories(list) {
 }
 
 function _fetchPosts(list) {
+	
 	/* === Normalize === */
 	let _normalize = {
-		listAll: {},
+		listAll: [],
 		listByCategory: {},
+		listById: [],
 		listIds: []
 	}
+
+
+	/* === LIST ALL === */
+	_normalize.listAll = list
 
 	for (const item of list) {
 
 		/* === By ID === */
-		if (_normalize.listAll[item.id] === undefined)
-			_normalize.listAll[item.id] = {}
-
-		_normalize.listAll[item.id] = item;
+		if (_normalize.listById[item.id] === undefined)
+			_normalize.listById[item.id] = {}
+		_normalize.listById[item.id] = item;
 
 
 		/* === By Category === */
 		if (_normalize.listByCategory[item.category] === undefined)
 		 	_normalize.listByCategory[item.category] = []
-
 		_normalize.listByCategory[item.category].push(item.id)
+
 
 		/* === All IDS === */
 		_normalize.listIds.push(item.id);
