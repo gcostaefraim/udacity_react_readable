@@ -1,8 +1,15 @@
 import React, {Component} from 'react'
-import styled from 'styled-components'
 import {connect} from 'react-redux'
+
+import { Menu, Dropdown } from 'semantic-ui-react'
+
+import styled from 'styled-components'
+
 import ListPostsItem from './ListPostsItem'
+
+
 import sortBy from 'sort-by'
+
 
 class ListComments extends Component {
 
@@ -10,7 +17,8 @@ class ListComments extends Component {
 		super(props);
 
 		this.state = {
-			postsList: []
+			postsList: [],
+			order: '-voteScore'
 		}
 	}
 
@@ -21,26 +29,38 @@ class ListComments extends Component {
 	componentWillReceiveProps(nextProps) {
 		console.log('ListPost componentWillReceiveProps');
 		console.log(nextProps);
+
 		this.setState({
 			postsList: nextProps.postsList
 		})
 	}
 
+	setOrder(order = 'title'){
+		this.setState({
+			order
+		})
+	}
+
+
 	render() {
 
 		const chanel = this.props.match.params.chanel;
 
-		let arrayPosts = this.state.postsList
-		arrayPosts.sort(sortBy('-voteScore'))
+		/* === ORDER === */
+		const postsListOrdered = this.state.postsList.sort(sortBy(this.state.order))
 
-		const listPosts = arrayPosts.map((post) =>
+		/* === LIST OF POSTS === */
+		const listPosts = postsListOrdered.map((post) =>
 			<ListPostsItem post={post} key={post.id} />
-		);
+		)
+
 
 		return (
 			<Container>
 				{chanel}
 				<List>
+					<button onClick={() => this.setOrder('-voteScore')}>Order Por Vote Score</button>
+					<button onClick={() => this.setOrder('title')}>Order Por Data</button>
 					{listPosts}
 				</List>
 			</Container>

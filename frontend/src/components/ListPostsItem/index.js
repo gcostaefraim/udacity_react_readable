@@ -2,20 +2,41 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchPosts} from "../../actions"
 import styled from 'styled-components'
-import { Icon } from 'semantic-ui-react'
+import {Icon, Confirm} from 'semantic-ui-react'
 import * as PostAPI from '../../utils/PostsAPI'
 
-class PostsItem extends Component {
+class ListPostsItem extends Component {
 
 	constructor(props) {
 		super(props);
-
-		this.state = {post: props.post}
+		console.log(props.post);
+		this.state = {
+			post: props.post,
+			openConfirmDelete: false
+		}
 	}
 
-	onVote(vote){
-		PostAPI.vote(this.state.post.id, vote).then((post) => this.setState({post}))
-		this.props.fetchPosts()
+	confirmDeleteShow = () => this.setState({openConfirmDelete: true})
+	handleCancelConfirmDelete = () => this.setState({openConfirmDelete: false})
+	handleConfirConfirmDelete = () => {
+		PostAPI.del(this.state.post.id).then(() => {
+			this.props.fetchPosts()
+			this.setState({openConfirmDelete: false})
+		})
+	}
+
+
+	onVote(vote) {
+		PostAPI.vote(this.state.post.id, vote).then((post) => {
+			this.setState({post})
+			this.props.fetchPosts()
+		})
+	};
+
+	onDelete() {
+		PostAPI.del(this.state.post.id).then(() => {
+			this.props.fetchPosts()
+		})
 	};
 
 	render() {
@@ -38,10 +59,19 @@ class PostsItem extends Component {
 
 					<Actions>
 						<Icon name='edit' size='large' style={{marginTop: 4}} link title='Edit Post'></Icon>
-						<Icon name='trash outline' size='large' link title='Delete Post'></Icon>
+						<Icon name='trash outline' size='large' link title='Delete Post'
+									onClick={() => this.confirmDeleteShow()}></Icon>
 					</Actions>
 
 				</Main>
+
+				{/* Modal Confirm to Delete Post*/}
+				<Confirm
+					open={this.state.openConfirmDelete}
+					onCancel={this.handleCancelConfirmDelete}
+					onConfirm={this.handleConfirConfirmDelete}
+				/>
+
 			</Container>
 		)
 	}
@@ -70,7 +100,7 @@ function mapDispatchToProps(dispatch) {
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(PostsItem)
+)(ListPostsItem)
 
 
 const Container = styled.div `
