@@ -22,11 +22,8 @@ body {
     background: #ffffff;
     border-right: 1px solid #e3e3e3;
     height: 100%;
-    /*width: 250px;*/
     flex-direction: column;
 }
-
-
 
 #wrapper #main{
     flex: 1;
@@ -36,7 +33,6 @@ body {
 #wrapper #main #header{
     flex: 1;
     flex-direction: row;
-    /*height: 70px;*/
     background: #ffffff;
 }
 
@@ -47,17 +43,37 @@ body {
 }
 
 
+#wrapper #main #mainBoby{
+    display: flex;
+}
 
 
 
-#wrapper #main #content{
-    flex: 1;
+#wrapper #main #mainColumn{
+   /* flex: 1;
     flex-direction: row;
     height: calc(100% - 51px);
     overflow-x: auto;
-    background: #ffffff;
+    background: #ffffff;*/
+
+    margin-left: 0;
+    position: relative;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 1px;
+    box-shadow: inset 1px 0 0 0 #e8e8e8;
+
 }
 
+#wrapper #main #secondColumn{
+    display: flex;
+    flex-basis: 300px;
+    flex-shrink: 0;
+    min-width: 1px;
+    border-left: 1px solid #e8e8e8;
+    word-break:break-all
+}
 
 
 

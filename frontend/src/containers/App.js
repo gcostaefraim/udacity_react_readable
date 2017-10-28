@@ -5,7 +5,7 @@ import '../App.css';
 import NavTopBar from '../components/NavTopBar'
 import NavSideBar from '../components/NavSideBar'
 import BodyApp from '../components/BodyApp'
-
+import SecondaryColumn from "./SecondaryColumn";
 
 
 class App extends Component {
@@ -49,25 +49,29 @@ class App extends Component {
 	// 	);
 
 	render() {
+
 		return (
-		    <BrowserRouter>
-		        <div id="wrapper">
-		            <aside id="sidebar">
-		                <NavSideBar/>
-		            </aside>
+			<BrowserRouter>
+				<div id="wrapper">
+					<aside id="sidebar">
+						<NavSideBar/>
+					</aside>
 
-		            <main id="main">
-		                <header id="header">
-		                    <NavTopBar/>
-		                </header>
-
-		                <section id="content">
-		                    <BodyApp>ABC</BodyApp>
-		                </section>
-
-		            </main>
-		        </div>
-		    </BrowserRouter>
+					<main id="main">
+						<header id="header">
+							<NavTopBar/>
+						</header>
+						<div id="mainBoby">
+							<div id="mainColumn">
+								<BodyApp />
+							</div>
+							<div id="secondColumn">
+								<SecondaryColumn/>
+							</div>
+						</div>
+					</main>
+				</div>
+			</BrowserRouter>
 		);
 	}
 }
