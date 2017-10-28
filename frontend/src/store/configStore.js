@@ -11,8 +11,13 @@ const initialState = {
 		listAll: {},
 		listByCategory: {},
 		listIds: []
+	},
+	mainFilter: {
+		sort: null,
+		search: null
 	}
 };
+
 
 
 const configStore = () => {

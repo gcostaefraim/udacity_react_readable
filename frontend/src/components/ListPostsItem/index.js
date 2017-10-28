@@ -2,14 +2,15 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchPosts} from "../../actions"
 import styled from 'styled-components'
-import {Icon, Confirm} from 'semantic-ui-react'
+import {Icon, Confirm, Button,  Dropdown, Menu } from 'semantic-ui-react'
 import * as PostAPI from '../../utils/PostsAPI'
+
 
 class ListPostsItem extends Component {
 
 	constructor(props) {
 		super(props);
-		console.log(props.post);
+		// console.log(props.post);
 		this.state = {
 			post: props.post,
 			openConfirmDelete: false
@@ -58,9 +59,10 @@ class ListPostsItem extends Component {
 					<Comments>171 comments(s)</Comments>
 
 					<Actions>
-						<Icon name='edit' size='large' style={{marginTop: 4}} link title='Edit Post'></Icon>
-						<Icon name='trash outline' size='large' link title='Delete Post'
-									onClick={() => this.confirmDeleteShow()}></Icon>
+						<Button.Group>
+							<Button icon='edit' title='Edit'></Button>
+							<Button icon='trash outline' onClick={() => this.confirmDeleteShow()} title='Delete'></Button>
+						</Button.Group>
 					</Actions>
 
 				</Main>

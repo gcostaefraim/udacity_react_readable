@@ -8,13 +8,25 @@ import * as PostsAPI from '../utils/PostsAPI'
 export const TYPE = {
 	RELOAD_CATEGORIES: 'RELOAD_CATEGORIES',
 
-	FETCH_POSTS: 'FETCH_POSTS'
+	FETCH_POSTS: 'FETCH_POSTS',
+
+	SET_MAIN_SORT: 'SET_MAIN_SORT',
 }
 
 
 /*
  * action creators
  */
+
+
+export function setMainSort(sort) {
+	return {
+		type: TYPE.SET_MAIN_SORT,
+		payload: {
+			sort: sort
+		}
+	}
+}
 
 function _reloadCategories(list) {
 	return {
@@ -83,4 +95,3 @@ export function fetchPosts() {
 		})
 	}
 }
-
