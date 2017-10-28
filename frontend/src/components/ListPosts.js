@@ -1,16 +1,21 @@
 import React, {Component} from 'react'
-import styled from 'styled-components'
 import {connect} from 'react-redux'
+
+import styled from 'styled-components'
+
 import ListPostsItem from './ListPostsItem'
+
+
 import sortBy from 'sort-by'
+
 
 class ListComments extends Component {
 
 	constructor(props) {
 		super(props);
-
 		this.state = {
-			postsList: []
+			postsList: [],
+			sort: props.mainFilter.sort
 		}
 	}
 
@@ -19,29 +24,32 @@ class ListComments extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		console.log('ListPost componentWillReceiveProps');
-		console.log(nextProps);
+		// console.log('ListPost componentWillReceiveProps');
+		// console.log(nextProps);
+
 		this.setState({
-			postsList: nextProps.postsList
+			postsList: nextProps.postsList,
+			sort: nextProps.mainFilter.sort
 		})
 	}
+
 
 	render() {
 
 		const chanel = this.props.match.params.chanel;
 
-		let arrayPosts = this.state.postsList
-		arrayPosts.sort(sortBy('-voteScore'))
+		/* === ORDER === */
+		const postsListOrdered = this.state.postsList.sort(sortBy(this.state.sort))
 
-		const listPosts = arrayPosts.map((post) =>
+		/* === LIST OF POSTS === */
+		const ListPosts = () => postsListOrdered.map((post) =>
 			<ListPostsItem post={post} key={post.id} />
-		);
+		)
 
 		return (
 			<Container>
-				{chanel}
 				<List>
-					{listPosts}
+					<ListPosts/>
 				</List>
 			</Container>
 		);
@@ -54,7 +62,8 @@ class ListComments extends Component {
 
 function mapStateToProps(state) {
 	return {
-		postsList: state.posts.listAll
+		postsList: state.posts.listAll,
+		mainFilter: state.mainFilter
 	}
 }
 

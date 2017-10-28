@@ -26,8 +26,21 @@ function posts(state = {}, action) {
 			return state;
 	}
 }
+/*
+ * REDUCERS STORE MAIN FILTER
+ */
+
+function mainFilter(state = {}, action) {
+	switch (action.type) {
+		case TYPE.SET_MAIN_SORT:
+			return {...state, sort: action.payload.sort}
+		default:
+			return state;
+	}
+}
 
 export default combineReducers({
 	categories,
-	posts
-})
+	posts,
+	mainFilter
+});

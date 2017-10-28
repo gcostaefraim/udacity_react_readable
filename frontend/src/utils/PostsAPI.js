@@ -15,11 +15,22 @@ export const vote = (id, vote) =>
 	fetch(`${api}/posts/${id}`, {
 		headers: {
 			...headers,
-      "Content-Type": "application/json"
+			"Content-Type": "application/json"
 		},
 		method: "POST",
 		body: JSON.stringify({option: vote})
 	}).then(res => res.json())
-		.catch(res => console.log(res) );
+		.catch(res => res.json());
+
+
+export const del = (id) =>
+	fetch(`${api}/posts/${id}`, {
+		headers: {
+			...headers,
+			"Content-Type": "application/json"
+		},
+		method: "DELETE"
+	}).then(res => res.json())
+		.catch(res => res.json());
 
 
