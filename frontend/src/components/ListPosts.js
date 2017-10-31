@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-
 import styled from 'styled-components'
 
 import ListPostsItem from './ListPostsItem'
@@ -12,19 +11,22 @@ import sortBy from 'sort-by'
 class ListComments extends Component {
 
 	constructor(props) {
+		// console.log('Contructor ListPosts');
+		// console.log(props);
+
 		super(props);
 		this.state = {
-			postsList: [],
+			postsList: props.postsList,
 			sort: props.mainFilter.sort
 		}
 	}
 
 	componentDidMount() {
-		console.log("Mounted!");
+		// console.log("Mounted!");
 	}
 
 	componentWillReceiveProps(nextProps) {
-		// console.log('ListPost componentWillReceiveProps');
+		 // console.log('ListPost componentWillReceiveProps');
 		// console.log(nextProps);
 
 		this.setState({
@@ -45,6 +47,8 @@ class ListComments extends Component {
 		const ListPosts = () => postsListOrdered.map((post) =>
 			<ListPostsItem post={post} key={post.id} />
 		)
+		// console.log('Render ListPosts');
+		// console.log(postsListOrdered);
 
 		return (
 			<Container>
@@ -69,7 +73,7 @@ function mapStateToProps(state) {
 
 export default connect(
 	mapStateToProps,
-)(ListComments)
+)(ListComments);
 
 const Container = styled.div `
 `;
