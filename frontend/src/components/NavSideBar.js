@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
-import {Input, Label, Menu, Icon} from 'semantic-ui-react'
+import {Input, Label, Menu} from 'semantic-ui-react'
 
 import {reloadCategories, fetchPosts} from "../actions"
 import {connect} from 'react-redux'
@@ -12,9 +12,12 @@ class NavSideBar extends Component {
 	constructor(props) {
 		super(props);
 
+		// console.log('Contructor Navsidebar');
+		// console.log(props);
+
 		// Initial state
 		this.state = {
-			categoriesList: []
+			categoriesList: props.categoriesList
 		}
 	}
 
@@ -37,7 +40,7 @@ class NavSideBar extends Component {
 	// handleItemClick = (e, {name}) => console.log(name);
 
 	render() {
-		console.log(this.context);
+		// console.log(this.context);
 
 		const {activeItem} = this.state
 
@@ -52,7 +55,7 @@ class NavSideBar extends Component {
 					{this.state.categoriesList.map((category) => (
 						<Menu.Item
 							as={Link}
-							to={`/abc/${category.path}`}
+							to={`/${category.path}`}
 							name={category.name}
 							active={activeItem === category.name}
 							onClick={this.handleItemClick}

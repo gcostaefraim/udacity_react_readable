@@ -6,7 +6,7 @@ import {Route} from 'react-router-dom';
 const BodyApp = (props) => (
 	<Body>
 		<Route path={"/"} exact component={ListPosts}/>
-		<Route path={"/abc"} component={ListPosts}/>
+		<Route path={"/:chanel"} component={ListPosts}/>
 	</Body>
 )
 export default BodyApp

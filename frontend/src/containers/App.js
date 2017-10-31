@@ -5,7 +5,8 @@ import '../App.css';
 import NavTopBar from '../components/NavTopBar'
 import NavSideBar from '../components/NavSideBar'
 import BodyApp from '../components/BodyApp'
-import SecondaryColumn from "./SecondaryColumn";
+import {Route} from 'react-router-dom'
+import Thread from "./Thread";
 
 
 class App extends Component {
@@ -54,20 +55,22 @@ class App extends Component {
 			<BrowserRouter>
 				<div id="wrapper">
 					<aside id="sidebar">
-						<NavSideBar/>
+						<Route path="/:chanel?" component={NavSideBar}/>
 					</aside>
-
 					<main id="main">
 						<header id="header">
-							<NavTopBar/>
+							{/*<Route path="/" exact component={NavTopBar}/>*/}
+							<Route path="/:chanel?" component={NavTopBar}/>
 						</header>
 						<div id="mainBoby">
 							<div id="mainColumn">
-								<BodyApp />
+								<BodyApp/>
 							</div>
-							<div id="secondColumn">
-								<SecondaryColumn/>
-							</div>
+							<Route path="*/thread" component={Thread} >
+							</Route>
+							{/*<SecondaryColumn path="/:chanel/create" previousPath="/:chanel" component={NavSideBar}/>*/}
+							{/*<SecondaryColumn/>*/}
+
 						</div>
 					</main>
 				</div>

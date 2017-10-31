@@ -45,6 +45,7 @@ body {
 
 #wrapper #main #mainBoby{
     display: flex;
+    height: 100%;
 }
 
 
@@ -56,6 +57,9 @@ body {
     overflow-x: auto;
     background: #ffffff;*/
 
+    height: calc(100% - 51px);
+    overflow-x: auto;
+    min-width: 250px;
     margin-left: 0;
     position: relative;
     display: flex;
@@ -68,11 +72,12 @@ body {
 
 #wrapper #main #secondColumn{
     display: flex;
-    flex-basis: 300px;
+    flex-basis: 470px;
     flex-shrink: 0;
     min-width: 1px;
     border-left: 1px solid #e8e8e8;
-    word-break:break-all
+    word-break:break-all;
+    flex-direction: column;
 }
 
 

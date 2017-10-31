@@ -8,12 +8,12 @@ const initialState = {
 		list: []
 	},
 	posts: {
-		listAll: {},
+		listAll: [],
 		listByCategory: {},
 		listIds: []
 	},
 	mainFilter: {
-		sort: null,
+		sort: '-voteScore',
 		search: null
 	}
 };

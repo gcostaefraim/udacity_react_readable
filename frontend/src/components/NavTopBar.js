@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import styled from 'styled-components'
-//import {Link} from 'react-router-dom'
-import {Input, Menu, Dropdown,} from 'semantic-ui-react'
+import {Link} from 'react-router-dom'
+import {Input, Menu, Dropdown, Icon} from 'semantic-ui-react'
 import {} from '../actions'
 import {setMainSort} from "../actions/index";
 
@@ -12,27 +12,84 @@ class NavTopBar extends Component {
 
 	constructor(props) {
 		super(props);
+
+		this.state = {
+			mainFilter: props.mainFilter
+		}
+	}
+
+	componentWillReceiveProps(nextProps) {
+		this.setState({
+			mainFilter: nextProps.mainFilter
+		})
 	}
 
 
+	handleChangeSort(e, {value}) {
+		if (value !== this.state.mainFilter.sort)
+			this.props.setMainSort(value)
+	}
+
 
 	render() {
+
+		const {location, history} = this.props;
+		const pathname = location.pathname.replace('/thread/postcreate', '')
+		const createPath = `${pathname}/thread/postcreate`
+
+		let pathCreate = ''
+
+
+		if (location.pathname.includes('/thread')) {
+			pathCreate = location.pathname.split("/thread")[0]
+		} else {
+			pathCreate = location.pathname
+		}
+
+		if (pathCreate.substr(-1) === '/') {
+			pathCreate += `thread/postcreate`
+		} else {
+			pathCreate += `/thread/postcreate`
+		}
+
+		console.log('@@@@@@');
+
+		console.log(pathCreate)
+
+
+		console.log('-------');
+		console.log(`${pathname}thread/postcreate`);
+		console.log(createPath);
+		console.log('-------');
+
 		const DropdownSort = () => (
 			<Dropdown
-				onChange={(e, {value}) => this.props.setMainSort(value)}
-				text='Sort By' item
+				onChange={this.handleChangeSort.bind(this)}
+				text='Sort By'
+				closeOnChange
+				item
 				options={[
-					{key: 1, text: 'Vote Score (Hight to Low)', value: '-voteScore'},
-					{key: 2, text: 'Vote Score (Low to Hight)', value: 'voteScore'},
-					{key: 3, text: 'Title', value: 'title'},
+					{key: 1, text: 'Vote Score (Hight to Low)', value: '-voteScore', selected: this.state.mainFilter.sort === '-voteScore'},
+					{key: 2, text: 'Vote Score (Low to Hight)', value: 'voteScore', selected: this.state.mainFilter.sort === 'voteScore'},
+					{key: 3, text: 'Title', value: '-title', selected: this.state.mainFilter.sort === '-title'},
 				]}
 			/>
 		)
 
 		return (
+
+
 			<TopBar>
 				<Menu style={{border: 0, borderRadius: 0, marginBottom: 1}}>
 					<Menu.Item header>Readable</Menu.Item>
+					<Menu.Item
+						as={Link}
+						to={pathCreate}
+					>
+						<Icon name='plus'/>
+						Create a Post
+					</Menu.Item>
+
 					<Menu.Menu position='right'>
 						<DropdownSort/>
 						<Menu.Item>
@@ -51,7 +108,9 @@ class NavTopBar extends Component {
  */
 
 function mapStateToProps(state) {
-	return {}
+	return {
+		mainFilter: state.mainFilter
+	}
 }
 
 /*
