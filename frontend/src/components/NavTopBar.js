@@ -34,11 +34,7 @@ class NavTopBar extends Component {
 	render() {
 
 		const {location, history} = this.props;
-		const pathname = location.pathname.replace('/thread/postcreate', '')
-		const createPath = `${pathname}/thread/postcreate`
-
 		let pathCreate = ''
-
 
 		if (location.pathname.includes('/thread')) {
 			pathCreate = location.pathname.split("/thread")[0]
@@ -51,16 +47,6 @@ class NavTopBar extends Component {
 		} else {
 			pathCreate += `/thread/postcreate`
 		}
-
-		console.log('@@@@@@');
-
-		console.log(pathCreate)
-
-
-		console.log('-------');
-		console.log(`${pathname}thread/postcreate`);
-		console.log(createPath);
-		console.log('-------');
 
 		const DropdownSort = () => (
 			<Dropdown

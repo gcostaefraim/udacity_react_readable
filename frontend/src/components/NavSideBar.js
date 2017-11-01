@@ -17,7 +17,8 @@ class NavSideBar extends Component {
 
 		// Initial state
 		this.state = {
-			categoriesList: props.categoriesList
+			categoriesList: props.categoriesList,
+			postsListByCategory: props.postsListByCategory
 		}
 	}
 
@@ -28,21 +29,18 @@ class NavSideBar extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		this.setState({
-			categoriesList: nextProps.categoriesList
+			categoriesList: nextProps.categoriesList,
+			postsListByCategory: nextProps.postsListByCategory
 		})
 	}
 
-	state = {activeItem: 'inbox'}
 
-	// handleItemClick = (e, b) => console.log(e);
 	handleItemClick = (e, {name}) => this.setState({activeItem: name})
 
-	// handleItemClick = (e, {name}) => console.log(name);
-
 	render() {
-		// console.log(this.context);
 
-		const {activeItem} = this.state
+		const {activeItem, postsListByCategory} = this.state
+
 
 		return (
 			<Sidebar>
@@ -50,6 +48,17 @@ class NavSideBar extends Component {
 
 					<Menu.Item>
 						<Input icon='search' placeholder='Search mail...'/>
+					</Menu.Item>
+
+					<Menu.Item
+						as={Link}
+						to={'/'}
+						name={'All'}
+						active={activeItem === 'All'}
+						onClick={this.handleItemClick}
+						key={'all'}
+					>
+						# All
 					</Menu.Item>
 
 					{this.state.categoriesList.map((category) => (
@@ -61,8 +70,9 @@ class NavSideBar extends Component {
 							onClick={this.handleItemClick}
 							key={category.path}
 						>
-							{/*/!*<Icon name='home' />*!/*/}
-							<Label color='teal'>1</Label>
+							<Label color='teal'>
+								{postsListByCategory[category.name] ? postsListByCategory[category.name].length : 0}
+							</Label>
 							# {category.name}
 						</Menu.Item>
 					))}
@@ -77,9 +87,10 @@ class NavSideBar extends Component {
  * REDUX STATE
  */
 
-function mapStateToProps({categories}) {
+function mapStateToProps({categories, posts}) {
 	return {
-		categoriesList: categories.list
+		categoriesList: categories.list,
+		postsListByCategory: posts.listByCategory
 	}
 }
 

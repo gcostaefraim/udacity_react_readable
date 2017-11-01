@@ -62,7 +62,7 @@ function _fetchPosts(list) {
 		/* === By Category === */
 		if (_normalize.listByCategory[item.category] === undefined)
 		 	_normalize.listByCategory[item.category] = []
-		_normalize.listByCategory[item.category].push(item.id)
+		_normalize.listByCategory[item.category].push(item)
 
 
 		/* === All IDS === */
