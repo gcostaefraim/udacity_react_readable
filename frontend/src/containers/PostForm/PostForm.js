@@ -94,8 +94,6 @@ class PostForm extends Component {
 
 	render() {
 
-		console.log(this.state);
-
 		const errorFields = this.state.errorFields;
 
 

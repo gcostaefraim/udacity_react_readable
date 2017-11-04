@@ -7,7 +7,7 @@ import {TYPE} from '../actions'
 
 function categories(state = {}, action) {
 	switch (action.type) {
-		case TYPE.RELOAD_CATEGORIES:
+		case TYPE.FETCH_CATEGORIES:
 			return action.payload
 		default:
 			return state;
@@ -38,9 +38,22 @@ function mainFilter(state = {}, action) {
 			return state;
 	}
 }
+/*
+ * REDUCERS STORE POST COMMENTS
+ */
+
+function comments(state = {}, action) {
+	switch (action.type) {
+		case TYPE.FETCH_POST_COMMENTS:
+			return action.payload.list
+		default:
+			return state;
+	}
+}
 
 export default combineReducers({
 	categories,
 	posts,
-	mainFilter
+	mainFilter,
+	comments
 });

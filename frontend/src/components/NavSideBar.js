@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import {Link} from 'react-router-dom'
 import {Input, Label, Menu} from 'semantic-ui-react'
 
-import {reloadCategories, fetchPosts} from "../actions"
+import {fetchCategories, fetchPosts} from "../actions"
 import {connect} from 'react-redux'
 
 
@@ -24,7 +24,7 @@ class NavSideBar extends Component {
 
 	componentDidMount() {
 		// this.props.fetchPosts()
-		// this.props.reloadCategories()
+		// this.props.fetchCategories()
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -100,7 +100,7 @@ function mapStateToProps({categories, posts}) {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		reloadCategories: () => dispatch(reloadCategories()),
+		fetchCategories: () => dispatch(fetchCategories()),
 		fetchPosts: () => dispatch(fetchPosts()),
 	}
 }

@@ -3,14 +3,13 @@ import {Route, Link} from 'react-router-dom';
 import styled from 'styled-components'
 import {Menu, Icon, Segment} from 'semantic-ui-react'
 import PostForm from "./PostForm/PostForm";
+import PostDetails from "./PostDetails/PostDetails";
 
 
 class Thread extends Component {
 
 	constructor(props) {
 		super(props)
-		console.log('Contructor SecondaryColumn');
-		console.log(props.location);
 	}
 
 	componentDidMount() {
@@ -19,7 +18,6 @@ class Thread extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		var routeChanged = nextProps.location !== this.props.location
-		console.log('componentWillReceiveProps SecondaryColumn', nextProps);
 	}
 
 	render() {
@@ -27,14 +25,12 @@ class Thread extends Component {
 
 		const pathToClose = location.pathname.split("/thread")[0]
 
-
-		console.log(this.props.match);
 		return (
 			<div id="secondColumn">
 				<Header>
 					<Menu secondary size='massive'>
 						<Menu.Item header>
-							Create Post
+							<span>Create Post</span>
 						</Menu.Item>
 						<Menu.Menu position='right'>
 							<Menu.Item
@@ -46,12 +42,12 @@ class Thread extends Component {
 						</Menu.Menu>
 					</Menu>
 				</Header>
-				{/*<Component {...props}/>*/}
 				<Body>
-				<Segment attached>
+				<SegmentStyled attached>
 					<Route path="*/postcreate" component={PostForm}/>
 					<Route path="*/postedit/:id" component={PostForm}/>
-				</Segment>
+					<Route path="*/postdetails/:id" component={PostDetails}/>
+				</SegmentStyled>
 				</Body>
 			</div>
 		)
@@ -63,6 +59,21 @@ export default Thread
 /*
  * Component Style
  */
+const SegmentStyled = styled(Segment) `
+		height: calc(100% - 48px);
+    overflow-x: auto;
+    margin-left: 0;
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex: 1 1;
+    flex: 1 1;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 1px;
+    -webkit-box-shadow: inset 1px 0 0 0 #e8e8e8;
+    box-shadow: inset 1px 0 0 0 #e8e8e8;
+`;
 
 const Header = styled.div `
 		//background-color: #f9f9f9;
@@ -70,7 +81,9 @@ const Header = styled.div `
     //height: 100%;
     //width: 100%;
 `;
+
 const Body = styled.div `
+		height: calc(100% - 48px);
     //height: 100%;
     //width: 100%;
 `;

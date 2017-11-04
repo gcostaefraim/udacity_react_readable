@@ -57,7 +57,8 @@ class NavTopBar extends Component {
 				options={[
 					{key: 1, text: 'Vote Score (Hight to Low)', value: '-voteScore', selected: this.state.mainFilter.sort === '-voteScore'},
 					{key: 2, text: 'Vote Score (Low to Hight)', value: 'voteScore', selected: this.state.mainFilter.sort === 'voteScore'},
-					{key: 3, text: 'Title', value: '-title', selected: this.state.mainFilter.sort === '-title'},
+					{key: 3, text: 'Date (Last to First)', value: '-timestamp', selected: this.state.mainFilter.sort === '-timestamp'},
+					{key: 4, text: 'Date (First to Last)', value: 'timestamp', selected: this.state.mainFilter.sort === 'timestamp'},
 				]}
 			/>
 		)

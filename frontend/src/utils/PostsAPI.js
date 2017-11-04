@@ -1,6 +1,7 @@
 const api = "http://127.0.0.1:3001"
 
 const headers = {
+	'method': 'GET',
 	'Accept': 'application/json',
 	'Authorization': '123'
 }
@@ -8,6 +9,10 @@ const headers = {
 
 export const getAll = () =>
 	fetch(`${api}/posts`, {headers})
+		.then(res => res.json());
+
+export const getComments = (id) =>
+	fetch(`${api}/posts/${id}/comments`, {headers})
 		.then(res => res.json());
 
 
@@ -52,7 +57,7 @@ export const create = (data) =>
 
 
 function uuidv4() {
-	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+	return 'pxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
 		var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
 		return v.toString(16);
 	});
