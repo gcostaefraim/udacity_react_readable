@@ -1,7 +1,7 @@
 import {createStore, applyMiddleware, compose} from 'redux'
 import reducers from '../reducers/index'
 import thunk from 'redux-thunk'
-import {reloadCategories, fetchPosts} from "../actions"
+import {fetchCategories, fetchPosts, fetchComments} from "../actions"
 
 const initialState = {
 	categories: {
@@ -31,9 +31,9 @@ const configStore = () => {
 	)
 
 	/* === BEGIN FETCH INITIAL STATE OF APPLICATION  === */
-	store.dispatch(reloadCategories());
+	store.dispatch(fetchCategories());
 	store.dispatch(fetchPosts());
-	
+
 	return store;
 }
 

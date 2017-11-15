@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
-import {fetchPosts} from "../../actions"
+import {fetchPosts, fetchPostComments} from "../../actions"
 import styled from 'styled-components'
 import {Icon, Confirm, Button} from 'semantic-ui-react'
 import * as PostAPI from '../../utils/PostsAPI'
@@ -56,7 +56,7 @@ class ListPostsItem extends Component {
 					</ScoreUp>
 				</Score>
 				<Main>
-					<Title>{post.title}</Title>
+					<Title><Link to={`/thread/postdetails/${post.id}`}>{post.title}</Link></Title>
 					<Author>By: {post.author}</Author>
 					<Comments>171 comments(s)</Comments>
 

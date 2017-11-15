@@ -1,12 +1,14 @@
 import * as CategoriesAPI from '../utils/CategoriesAPI'
 import * as PostsAPI from '../utils/PostsAPI'
+import * as CommentsAPI from '../utils/CommentsAPI'
 
 /*
  * action types
  */
 
 export const TYPE = {
-	RELOAD_CATEGORIES: 'RELOAD_CATEGORIES',
+	FETCH_CATEGORIES: 'FETCH_CATEGORIES',
+	FETCH_POST_COMMENTS: 'FETCH_POST_COMMENTS',
 
 	FETCH_POSTS: 'FETCH_POSTS',
 
@@ -28,11 +30,44 @@ export function setMainSort(sort) {
 	}
 }
 
-function _reloadCategories(list) {
+function _fetchCategories(list) {
 	return {
-		type: TYPE.RELOAD_CATEGORIES,
+		type: TYPE.FETCH_CATEGORIES,
 		payload: {
 			list: list
+		}
+	}
+}
+
+function _fetchPostComments(list) {
+
+
+	/* === Normalize === */
+	let _normalize = {
+		listAll: [],
+		listById: [],
+		listByPostId: {}
+	}
+
+
+	/* === LIST ALL === */
+	_normalize.listAll = list
+
+	for (const item of list) {
+
+		/* === By Post ID === */
+		if (_normalize.listByPostId[item.parentId] === undefined)
+			_normalize.listByPostId[item.parentId] = []
+		_normalize.listByPostId[item.parentId].push(item)
+
+	}
+
+	console.log(_normalize);
+
+	return {
+		type: TYPE.FETCH_POST_COMMENTS,
+		payload: {
+			list: _normalize
 		}
 	}
 }
@@ -80,10 +115,10 @@ function _fetchPosts(list) {
  * action thunk
  */
 
-export function reloadCategories() {
+export function fetchCategories() {
 	return dispatch => {
 		CategoriesAPI.getAll().then((list) => {
-			dispatch(_reloadCategories(list))
+			dispatch(_fetchCategories(list))
 		})
 	}
 }
@@ -92,6 +127,13 @@ export function fetchPosts() {
 	return dispatch => {
 		PostsAPI.getAll().then((list) => {
 			dispatch(_fetchPosts(list))
+		})
+	}
+}
+export function fetchPostComments(id) {
+	return dispatch => {
+		PostsAPI.getComments(id).then((list) => {
+			dispatch(_fetchPostComments(list))
 		})
 	}
 }
