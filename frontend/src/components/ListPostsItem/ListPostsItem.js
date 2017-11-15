@@ -16,6 +16,7 @@ class ListPostsItem extends Component {
 		 
 		this.state = {
 			post: props.post,
+			totalComments: props.totalComments,
 			openConfirmDelete: false
 		}
 	}
@@ -42,7 +43,9 @@ class ListPostsItem extends Component {
 
 	render() {
 
-		const {post} = this.state;
+
+		// const {post} = this.state;
+		const {totalComments, post} = this.props;
 
 		return (
 			<Container>
@@ -56,13 +59,13 @@ class ListPostsItem extends Component {
 					</ScoreUp>
 				</Score>
 				<Main>
-					<Title><Link to={`/thread/postdetails/${post.id}`}>{post.title}</Link></Title>
+					<Title><Link to={`/${post.category}/${post.id}`}>{post.title}</Link></Title>
 					<Author>By: {post.author}</Author>
-					<Comments>171 comments(s)</Comments>
+					<Comments>{totalComments} comments(s)</Comments>
 
 					<Actions>
 						<Button.Group>
-							<Button icon='edit' title='Edit' as={Link} to={`/thread/postedit/${post.id}`}></Button>
+							<Button icon='edit' title='Edit' as={Link} to={`/${post.category}/edit/${post.id}`}></Button>
 							<Button icon='trash outline' onClick={() => this.confirmDeleteShow()} title='Delete'></Button>
 						</Button.Group>
 					</Actions>
@@ -85,9 +88,14 @@ class ListPostsItem extends Component {
  * REDUX STATE
  */
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
+	const
+		postId = props.post.id,
+		commentsByPostId = state.comments.listByPostId
+
 	return {
-		postsList: state.posts.listAll
+		postsList: state.posts.listAll,
+
 	}
 }
 

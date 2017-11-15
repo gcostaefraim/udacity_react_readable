@@ -39,13 +39,15 @@ function mainFilter(state = {}, action) {
 	}
 }
 /*
- * REDUCERS STORE POST COMMENTS
+ * REDUCERS STORE COMMENTS
  */
 
 function comments(state = {}, action) {
 	switch (action.type) {
 		case TYPE.FETCH_POST_COMMENTS:
-			return action.payload.list
+			return action.payload
+		case TYPE.FETCH_ALL_COMMENTS:
+			return action.payload
 		default:
 			return state;
 	}

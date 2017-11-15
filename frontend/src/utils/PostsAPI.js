@@ -1,3 +1,5 @@
+import uuidv1 from 'uuid/v1'
+
 const api = "http://127.0.0.1:3001"
 
 const headers = {
@@ -48,7 +50,7 @@ export const create = (data) =>
 		},
 		"body": JSON.stringify({
 			...data,
-			"id": uuidv4(),
+			"id": uuidv1(),
 			"timestamp": Date.now(),
 		})
 		,
@@ -56,28 +58,19 @@ export const create = (data) =>
 		.catch(res => res.json());
 
 
-function uuidv4() {
-	return 'pxxxxxxxxxxxxxxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-		var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-		return v.toString(16);
-	});
-}
+export const update = (id, data) =>
+	fetch(`${api}/posts/${id}`, {
+		"method": "PUT",
+		"headers": {
+			...headers,
+			"Content-Type": "application/json",
+		},
+		"body": JSON.stringify({
+			...data
+		})
+		,
+	}).then(res => res.json())
+		.catch(res => res.json());
 
-
-
-/*
-POST /posts
-USAGE:
-	Add a new post
-
-PARAMS:
-	id - UUID should be fine, but any unique id will work
-timestamp - timestamp in whatever format you like, you can use Date.now() if you like
-title - String
-body - String
-author - String
-category: Any of the categories listed in categories.js. Feel free to extend this list as you desire.
-
-*/
 
 

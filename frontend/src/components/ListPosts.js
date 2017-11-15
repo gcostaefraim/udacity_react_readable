@@ -8,28 +8,23 @@ import ListPostsItem from './ListPostsItem'
 import sortBy from 'sort-by'
 
 
-class ListComments extends Component {
+class ListPosts extends Component {
 
 	constructor(props) {
 
 		super(props);
 
 		let postsList = []
-		const {chanel} = props.match.params
-		const {postsByCategory, postsListAll} = props
+		const {category} = props.match.params
+		const {listByCategory, postsListAll} = props.posts
 
-		if (chanel && chanel !== 'thread') {
-			if (postsByCategory[chanel])
-				postsList = postsByCategory[chanel];
-		} else {
-			postsList = postsListAll;
-		}
-
-		this.state = {
-			postsList: postsList,
-			sort: props.mainFilter.sort
-		}
-
+		// if (chanel && chanel !== 'thread') {
+		//
+		// 	if (listByCategory[chanel])
+		// 		postsList = postsByCategory[chanel];
+		// } else {
+		// 	postsList = postsListAll;
+		// }
 
 	}
 
@@ -37,34 +32,51 @@ class ListComments extends Component {
 	componentWillReceiveProps(nextProps) {
 
 		let postsList = []
-		const {chanel} = nextProps.match.params
+		const {category} = nextProps.match.params
 		const {postsByCategory} = nextProps
 
-		if (chanel && chanel !== 'thread') {
-			if (postsByCategory[chanel])
-				postsList = postsByCategory[chanel];
-		} else {
-			postsList = nextProps.postsListAll;
-		}
-
-		this.setState({
-			postsList: postsList,
-			sort: nextProps.mainFilter.sort
-		})
+		// if (chanel && chanel !== 'thread') {
+		// 	if (postsByCategory[chanel])
+		// 		postsList = postsByCategory[chanel];
+		// } else {
+		// 	postsList = nextProps.postsListAll;
+		// }
 	}
 
 
 	render() {
 
-		const chanel = this.props.match.params.chanel;
+		const
+			{category} = this.props.match.params,
+			commentsByPostId = this.props.comments.listByPostId,
+			postsListAll = this.props.posts.listAll || [],
+			postsByCategory = this.props.posts.listByCategory,
+			{mainFilter} = this.props
 
+
+		/* === FILTERED === */
+		let postsListFiltered = []
+		if (category && category !== 'thread') {
+			if (postsByCategory[category])
+				postsListFiltered = postsByCategory[category];
+		} else {
+			postsListFiltered = postsListAll;
+		}
 
 		/* === ORDER === */
-		const postsListOrdered = this.state.postsList.sort(sortBy(this.state.sort))
+		const postsListOrdered = postsListFiltered.sort(sortBy(mainFilter.sort))
+
+		// console.log('=====');
+		// console.log(commentsByPostId);
+		// console.log(postsListAll);
 
 		/* === LIST OF POSTS === */
 		const ListPosts = () => postsListOrdered.map((post) =>
-			<ListPostsItem post={post} key={post.id}/>
+			<ListPostsItem
+				post={post}
+				key={post.id}
+				totalComments={commentsByPostId[post.id] ? commentsByPostId[post.id].length : 0}
+			/>
 		)
 
 		return (
@@ -77,21 +89,28 @@ class ListComments extends Component {
 	}
 }
 
+
 /*
  * REDUX STATE
  */
 
 function mapStateToProps(state) {
+
 	return {
-		postsListAll: state.posts.listAll,
-		postsByCategory: state.posts.listByCategory,
+		posts: {
+			listAll: state.posts.listAll,
+			listByCategory: state.posts.listByCategory,
+		},
+		comments: {
+			listByPostId: state.comments.listByPostId
+		},
 		mainFilter: state.mainFilter
 	}
 }
 
 export default connect(
 	mapStateToProps,
-)(ListComments);
+)(ListPosts);
 
 const Container = styled.div `
 `;
