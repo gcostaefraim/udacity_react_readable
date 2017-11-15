@@ -2,8 +2,10 @@ import React, {Component} from 'react';
 import {Route, Link} from 'react-router-dom';
 import styled from 'styled-components'
 import {Menu, Icon, Segment} from 'semantic-ui-react'
-import PostForm from "./PostForm/PostForm";
-import PostDetails from "./PostDetails/PostDetails";
+import PostForm from "./PostForm";
+import PostEdit from "./PostEdit"
+import PostDetails from "./PostDetails";
+import PostCreate from "./PostCreate/PostCreate";
 
 
 class Thread extends Component {
@@ -17,16 +19,15 @@ class Thread extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		var routeChanged = nextProps.location !== this.props.location
 	}
 
 	render() {
-		const {history, location} = this.props
+		const {location} = this.props
 
 		const pathToClose = location.pathname.split("/thread")[0]
 
 		return (
-			<div id="secondColumn">
+			<ThreadColumn hide={location.pathname === '/'}>
 				<Header>
 					<Menu secondary size='massive'>
 						<Menu.Item header>
@@ -44,12 +45,12 @@ class Thread extends Component {
 				</Header>
 				<Body>
 				<SegmentStyled attached>
-					<Route path="*/postcreate" component={PostForm}/>
-					<Route path="*/postedit/:id" component={PostForm}/>
-					<Route path="*/postdetails/:id" component={PostDetails}/>
+					<Route path="/create" component={PostCreate}/>
+					<Route path="*/edit/:id" component={PostEdit}/>
+					<Route path="*/:category/:id" component={PostDetails}/>
 				</SegmentStyled>
 				</Body>
-			</div>
+			</ThreadColumn>
 		)
 	}
 }
@@ -59,6 +60,16 @@ export default Thread
 /*
  * Component Style
  */
+const ThreadColumn = styled.div  `
+    display: ${props => props.hide ? 'none': 'flex'};
+    flex-basis: 470px;
+    flex-shrink: 0;
+    min-width: 1px;
+    border-left: 1px solid #e8e8e8;
+    word-break:break-all;
+    flex-direction: column;
+    `
+
 const SegmentStyled = styled(Segment) `
 		height: calc(100% - 48px);
     overflow-x: auto;

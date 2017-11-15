@@ -4,17 +4,18 @@ import {Form, Input, TextArea, Button, Dropdown, Message} from 'semantic-ui-reac
 import {fetchPosts} from "../../actions/index";
 
 
-import * as PostsAPI from '../../utils/PostsAPI'
-
 class PostForm extends Component {
 
+
 	constructor(props) {
-		super(props);
+		super(props)
+
+		const {loading, post, categoriesList} = props
 
 		this.state = {
-			loading: false,
-			categoriesOptions: this.createCategoriesOptions(props.categoriesList),
-			fields: {
+			loading,
+			categoriesOptions: this.createCategoriesOptions(categoriesList),
+			fields: post && post.id ? post : {
 				title: '',
 				author: '',
 				category: '',
@@ -23,12 +24,23 @@ class PostForm extends Component {
 			errorFields: {},
 			errorMessages: [],
 		}
+
+
+		this.handleSubmit = this.handleSubmit.bind(this)
+		this.handleFieldChanged = this.handleFieldChanged.bind(this)
+		this.handleValidation = this.handleValidation.bind(this)
+
 	}
 
 	componentWillReceiveProps(nextProps) {
-		this.setState({
-			categoriesOptions: this.createCategoriesOptions(nextProps.categoriesList)
-		})
+		const {loading, post, categoriesList} = nextProps
+
+		this.setState((prevState) => ({
+			loading,
+			categoriesOptions: this.createCategoriesOptions(categoriesList),
+			fields: post && post.id ? post : prevState.fields
+		}))
+
 	}
 
 	createCategoriesOptions(categories) {
@@ -48,12 +60,7 @@ class PostForm extends Component {
 	}
 
 	handleSubmit() {
-		this.setState({loading: true});
-
-		PostsAPI.create(this.state.fields).then((r) => {
-			this.props.fetchPosts()
-			this.setState({loading: false});
-		})
+		this.props.handleSubmit(this.state.fields)
 	}
 
 	handleValidation(e) {
@@ -80,121 +87,89 @@ class PostForm extends Component {
 			errorMessages.push("You need to enter the Body")
 		}
 
+		if (errorMessages.length > 0 || errorFields.length > 0)
+			e.preventDefault();
 
 		this.setState({
 			errorMessages,
 			errorFields
 		})
 
-		if (errorMessages.length > 0 || errorFields.length > 0)
-			e.preventDefault();
-
 	}
 
 
 	render() {
 
-		const errorFields = this.state.errorFields;
+		const {
+			fields,
+			errorFields,
+			errorMessages,
+			categoriesOptions,
+			loading
+		} = this.state;
 
 
 		const MessageExampleError = () => (
 			<Message
 				color='red'
 				header='There was some errors with your submission'
-				list={this.state.errorMessages}
-				hidden={this.state.errorMessages.length === 0}
+				list={errorMessages}
+				hidden={errorMessages.length === 0}
 			/>
 		)
 
 
 		return (
-			<Form onSubmit={this.handleSubmit.bind(this)} loading={this.state.loading}>
+
+			<Form onSubmit={this.handleSubmit} loading={loading}>
 				<MessageExampleError/>
+
 				<Form.Field
 					name='title'
-					onChange={this.handleFieldChanged.bind(this)}
+					onChange={this.handleFieldChanged}
 					control={Input}
 					error={errorFields.title}
+					value={fields.title}
 					label='Title*'
-					placeholder='Post Title'/>
+					placeholder='Title'/>
 
 				<Form.Group widths='equal'>
 					<Form.Field
 						name='author'
-						onChange={this.handleFieldChanged.bind(this)}
+						onChange={this.handleFieldChanged}
 						control={Input}
 						error={errorFields.author}
+						value={fields.author}
 						label='Author*'
 						placeholder='Author Name'/>
 
 					<Form.Field
 						name='category'
-						onChange={this.handleFieldChanged.bind(this)}
+						onChange={this.handleFieldChanged}
 						control={Dropdown}
 						error={errorFields.category}
+						value={fields.category}
 						label='Category*'
-						options={this.state.categoriesOptions}
+						options={categoriesOptions}
 						selection
 						placeholder='Select a Category'/>
 				</Form.Group>
 
 				<Form.Field
 					name='body'
-					onChange={this.handleFieldChanged.bind(this)}
+					onChange={this.handleFieldChanged}
 					control={TextArea}
 					error={errorFields.body}
+					value={fields.body}
 					label='Body*'
 					placeholder='Body'/>
 				<Form.Field
 					control={Button}
-					onClick={this.handleValidation.bind(this)}
-					content='Create'/>
+					onClick={this.handleValidation}
+					content='Confirm'/>
 			</Form>
 		)
 	}
 }
 
-
-/*
- * REDUX STATE
- */
-
-function mapStateToProps({categories}) {
-	return {
-		categoriesList: categories.list
-	}
-}
-
-/*
- * REDUX ACTIONS
- */
-
-function mapDispatchToProps(dispatch) {
-	return {
-		fetchPosts: () => dispatch(fetchPosts()),
-	}
-}
-
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(PostForm);
-
-
-/*
-
-    POST /posts
-      USAGE:
-        Add a new post
-
-      PARAMS:
-        id - UUID should be fine, but any unique id will work
-        timestamp - timestamp in whatever format you like, you can use Date.now() if you like
-        title - String
-        body - String
-        author - String
-        category: Any of the categories listed in categories.js. Feel free to extend this list as you desire.
-
-
- */
+export default PostForm;

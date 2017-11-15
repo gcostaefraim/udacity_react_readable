@@ -1,6 +1,5 @@
 import * as CategoriesAPI from '../utils/CategoriesAPI'
 import * as PostsAPI from '../utils/PostsAPI'
-import * as CommentsAPI from '../utils/CommentsAPI'
 
 /*
  * action types
@@ -9,6 +8,9 @@ import * as CommentsAPI from '../utils/CommentsAPI'
 export const TYPE = {
 	FETCH_CATEGORIES: 'FETCH_CATEGORIES',
 	FETCH_POST_COMMENTS: 'FETCH_POST_COMMENTS',
+
+	FETCH_ALL_COMMENTS: 'FETCH_ALL_COMMENTS',
+
 
 	FETCH_POSTS: 'FETCH_POSTS',
 
@@ -39,8 +41,24 @@ function _fetchCategories(list) {
 	}
 }
 
+function _fetchAllComments(list) {
+
+	return {
+		type: TYPE.FETCH_ALL_COMMENTS,
+		payload: normalizeComments(list)
+	}
+}
+
 function _fetchPostComments(list) {
 
+	return {
+		type: TYPE.FETCH_POST_COMMENTS,
+		payload: normalizeComments(list)
+	}
+}
+
+
+function normalizeComments(list) {
 
 	/* === Normalize === */
 	let _normalize = {
@@ -54,26 +72,18 @@ function _fetchPostComments(list) {
 	_normalize.listAll = list
 
 	for (const item of list) {
-
 		/* === By Post ID === */
 		if (_normalize.listByPostId[item.parentId] === undefined)
 			_normalize.listByPostId[item.parentId] = []
 		_normalize.listByPostId[item.parentId].push(item)
-
 	}
 
-	console.log(_normalize);
-
-	return {
-		type: TYPE.FETCH_POST_COMMENTS,
-		payload: {
-			list: _normalize
-		}
-	}
+	return _normalize
 }
 
+
 function _fetchPosts(list) {
-	
+
 	/* === Normalize === */
 	let _normalize = {
 		listAll: [],
@@ -81,7 +91,6 @@ function _fetchPosts(list) {
 		listById: [],
 		listIds: []
 	}
-
 
 	/* === LIST ALL === */
 	_normalize.listAll = list
@@ -96,7 +105,7 @@ function _fetchPosts(list) {
 
 		/* === By Category === */
 		if (_normalize.listByCategory[item.category] === undefined)
-		 	_normalize.listByCategory[item.category] = []
+			_normalize.listByCategory[item.category] = []
 		_normalize.listByCategory[item.category].push(item)
 
 
@@ -130,10 +139,36 @@ export function fetchPosts() {
 		})
 	}
 }
+
 export function fetchPostComments(id) {
 	return dispatch => {
 		PostsAPI.getComments(id).then((list) => {
 			dispatch(_fetchPostComments(list))
 		})
+	}
+}
+
+export function fetchPostWithComments() {
+	return dispatch => {
+		PostsAPI.getAll().then((list) => {
+				let postIds = []
+				list.map((post) => postIds.push(post.id))
+
+				// postIds.map((id2) => {
+				// 	PostsAPI.getComments(id2).then((list) => {
+				// 		dispatch(_fetchPostComments(list))
+				// 	})
+				// })
+				Promise.all(
+					postIds.map((id2) =>
+						PostsAPI.getComments(id2)
+					)).then((allComments) => {
+					dispatch(_fetchAllComments([].concat(...allComments)))
+					console.log([].concat(...allComments));
+				})
+
+				dispatch(_fetchPosts(list))
+			}
+		)
 	}
 }

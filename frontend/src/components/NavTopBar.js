@@ -33,21 +33,6 @@ class NavTopBar extends Component {
 
 	render() {
 
-		const {location, history} = this.props;
-		let pathCreate = ''
-
-		if (location.pathname.includes('/thread')) {
-			pathCreate = location.pathname.split("/thread")[0]
-		} else {
-			pathCreate = location.pathname
-		}
-
-		if (pathCreate.substr(-1) === '/') {
-			pathCreate += `thread/postcreate`
-		} else {
-			pathCreate += `/thread/postcreate`
-		}
-
 		const DropdownSort = () => (
 			<Dropdown
 				onChange={this.handleChangeSort.bind(this)}
@@ -71,7 +56,7 @@ class NavTopBar extends Component {
 					<Menu.Item header>Readable</Menu.Item>
 					<Menu.Item
 						as={Link}
-						to={pathCreate}
+						to={'/create'}
 					>
 						<Icon name='plus'/>
 						Create a Post

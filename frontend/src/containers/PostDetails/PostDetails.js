@@ -1,75 +1,83 @@
 import React, {Component} from 'react'
+import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
-import {Divider, Label, Icon, Comment, Header, Form, Button} from 'semantic-ui-react'
+import {Divider, Label, Icon, Confirm, Comment, Header, Form, Button} from 'semantic-ui-react'
 import * as PostAPI from '../../utils/PostsAPI'
-import {fetchPosts, fetchPostComments} from '../../actions'
 import ListPostComments from "./ListPostComments";
 
 class PostDetails extends Component {
 
 
+
 	constructor(props) {
 		super(props)
 
-		const {id} = props.match.params;
+		// const {id} = props.match.params;
 
-		this.props.fetchPostComments(id)
-
+		//this.props.fetchPostComments(id)
 
 		this.state = {
-			post: [],
-			comments: []
+			// id,
+			// post: [],
+			// comments: [],
+			openConfirmDelete: false
 		}
 
 	}
 
 
-	componentWillReceiveProps(nextProps) {
-
-		const {id} = nextProps.match.params,
-			comments = nextProps.commentsByPostId,
-			posts = nextProps.postListById
-
+	/*componentWillReceiveProps(nextProps) {
+		console.log('componentWillReceiveProps PostDetails');
 		console.log(nextProps);
+		const
+			{id} = nextProps.match.params,
+			prevId = this.props.match.params.id,
+			comments = nextProps.comments.listByPostId,
+			posts = nextProps.postListById,
+			{fetchPostComments} = nextProps
+
+		//if (id !== prevId)
+			//fetchPostComments(id)
 
 		this.setState({
-			post: posts[id],
+			post: posts && posts[id] ? posts[id] : [],
 			comments: (comments && comments[id]) ? comments[id] : []
 		})
 
 	}
+*/
 
+	// onVote(vote) {
+	// 	PostAPI.vote(this.props.post.id, vote).then((post) => {
+	// 		this.setState({post})
+	// 		this.props.fetchPosts()
+	// 	})
+	// };
 
-	onVote(vote) {
-		PostAPI.vote(this.state.post.id, vote).then((post) => {
-			this.setState({post})
+	confirmDeleteShow = () => this.setState({openConfirmDelete: true})
+
+	handleCancelConfirmDelete = () => this.setState({openConfirmDelete: false})
+
+	handleConfirConfirmDelete = () => {
+		PostAPI.del(this.state.post.id).then(() => {
 			this.props.fetchPosts()
+			this.setState({openConfirmDelete: false})
+			this.props.history.push('/');
+
 		})
-	};
+	}
+
 
 
 	render() {
 
-
-
-
-
-		//alert(id)
-
-		console.log('------------');
-		console.log(this.state.comments);
-		console.log('------------');
-
-		const {post, comments} = this.state
-
+		const
+			{post, comments} = this.props,
+			totalComments = comments ? comments.length : 0
 
 		return (
-			<div>
-				{/*<Label ribbon color='green' title='Category'>*/}
-				{/*<Icon name='tags'/>*/}
-				{/*{post.category}*/}
-				{/*</Label>*/}
-				<div style={{textAlign: 'center'}}>{post.title}</div>
+			<div style={{padding: 15}}>
+				<div style={{textAlign: 'center'}}><h1>{post.title}</h1></div>
 				<Divider/>
 				<div>
 					<Label title='Author'>
@@ -81,7 +89,7 @@ class PostDetails extends Component {
 						{post.timestamp}
 					</Label>
 					<Label title='Like' as='a' onClick={() => this.onVote('upVote')}>
-						<Icon link name='like outline' color='blue'></Icon>
+						<Icon name='like outline' color='blue'></Icon>
 					</Label>
 					<Label title='Dislike' as='a' onClick={() => this.onVote('downVote')}>
 						<Icon name='dislike outline' color='orange'></Icon>
@@ -90,6 +98,16 @@ class PostDetails extends Component {
 						<Icon name='signal'/>
 						{post.voteScore}
 					</Label>
+
+					<Label title='Edit' as={Link} to={`/${post.category}/edit/${post.id}`} color='green'>
+						<Icon name='edit'/>
+					</Label>
+
+					<Label title='Delete' as='a' onClick={() => this.confirmDeleteShow()}>
+						<Icon name='trash outline'/>
+					</Label>
+
+
 				</div>
 				<div style={{marginTop: 20}}>
 					{post.body}
@@ -100,37 +118,22 @@ class PostDetails extends Component {
 					all)?
 				</div>
 
-				<ListPostComments comments={comments} postId={post.id} reloadComments={() => this.props.fetchPostComments(post.id)}/>
+				<ListPostComments
+					totalComments={totalComments}
+					comments={comments}
+					postId={post.id}
+					reloadComments={() => this.props.fetchPostComments(post.id)}/>
+
+				{/* Modal Confirm to Delete Post*/}
+				<Confirm
+					open={this.state.openConfirmDelete}
+					onCancel={this.handleCancelConfirmDelete}
+					onConfirm={this.handleConfirConfirmDelete}
+				/>
 
 			</div>
 		)
 	}
 }
 
-/*
- * REDUX STATE
- */
-
-function mapStateToProps(state) {
-	return {
-		postListById: state.posts.listById,
-		commentsByPostId: state.comments.listByPostId,
-	}
-}
-
-/*
- * REDUX ACTIONS
- */
-
-function mapDispatchToProps(dispatch) {
-	return {
-		fetchPosts: () => dispatch(fetchPosts()),
-		fetchPostComments: (id) => dispatch(fetchPostComments(id)),
-	}
-}
-
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(PostDetails)
+export default PostDetails

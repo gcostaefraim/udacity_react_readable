@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
-import {Icon, Comment, Header, Form, Button, TextArea, Message, Input} from 'semantic-ui-react'
+import {Icon, Confirm, Comment, Header, Form, Button, TextArea, Message, Input} from 'semantic-ui-react'
 
 import * as CommentsAPI from '../../utils/CommentsAPI'
+import ListPostCommentsItem from "./ListPostCommentsItem";
 
 
 class ListPostComments extends Component {
@@ -17,10 +18,11 @@ class ListPostComments extends Component {
 			},
 			errorFields: {},
 			errorMessages: [],
+			openConfirmDelete: false
 		}
 	}
 
-	resetForm(){
+	resetForm() {
 		this.setState({
 			loading: false,
 			fields: {
@@ -33,6 +35,7 @@ class ListPostComments extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
+		console.log('componentWillReceiveProps ListPostComments');
 		this.setState({
 			loading: false,
 			fields: {
@@ -99,9 +102,24 @@ class ListPostComments extends Component {
 
 	}
 
+
+	confirmDeleteShow = () => this.setState({openConfirmDelete: true})
+
+	handleCancelConfirmDelete = () => this.setState({openConfirmDelete: false})
+
+	handleConfirConfirmDelete = () => {
+		// PostAPI.del(this.state.post.id).then(() => {
+		// 	this.props.fetchPosts()
+		// 	this.setState({openConfirmDelete: false})
+		// 	this.props.history.push('/');
+		//
+		// })
+	}
+
+
 	render() {
 
-		const {comments} = this.props
+		const {comments, totalComments} = this.props
 		const errorFields = this.state.errorFields;
 
 
@@ -116,34 +134,15 @@ class ListPostComments extends Component {
 
 		return (
 			<Comment.Group>
-				<Header as='h3' dividing>Comments</Header>
+				<Header as='h3' dividing>Comments ({totalComments})</Header>
 
 				{comments.map((comment) =>
-					<Comment key={comment.id}>
-						<Comment.Avatar as='a' src='http://u.o0bc.com/avatars/no-user-image.gif'/>
-						<Comment.Content>
-							<Comment.Author as='a'>{comment.author}</Comment.Author>
-							<Comment.Metadata>
-								<span>{comment.timestamp}</span>
-							</Comment.Metadata>
-							<Comment.Text>
-								{comment.body}
-							</Comment.Text>
-							<Comment.Actions>
-								<Comment.Action title='Like'>
-									<Icon name='like outline' color='blue'/>
-								</Comment.Action>
-								<Comment.Action title='Dislike'>
-									<Icon name='dislike outline' color='orange'/>
-								</Comment.Action>
-								<Comment.Action title='Vote Score'>
-									<Icon name='signal' color='brown'/>
-									{comment.voteScore}
-								</Comment.Action>
-							</Comment.Actions>
-						</Comment.Content>
-					</Comment>
+					<ListPostCommentsItem
+						key={comment.id}
+						comment={comment}
+						reloadComments={this.props.reloadComments}/>
 				)}
+
 
 
 				<Form reply onSubmit={this.handleSubmit.bind(this)} loading={this.state.loading}>
@@ -167,12 +166,14 @@ class ListPostComments extends Component {
 						label='Body*'
 						placeholder='Body'/>
 					<Form.Field
+						color='blue'
 						control={Button}
 						onClick={this.handleValidation.bind(this)}
-						content='Create'/>
+						content='Submit Comment'/>
 					{/*<Form.TextArea style={{height: '6em', resize: 'none'}}/>*/}
 					{/*<Button content='Add a new comment' labelPosition='left' icon='edit' primary/>*/}
 				</Form>
+
 			</Comment.Group>
 		)
 	}
