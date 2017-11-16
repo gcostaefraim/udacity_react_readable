@@ -4,13 +4,23 @@ import * as CommentsAPI from '../../utils/CommentsAPI'
 
 
 class ListPostCommentsItem extends Component {
-	
+
 	constructor(props) {
 		super(props)
 
 		this.state = {
+			formEdit: {
+				body: props.comment.body,
+				loading: false
+			},
+			editing: false,
 			openConfirmDelete: false
 		}
+
+
+		this.handleFieldChanged = this.handleFieldChanged.bind(this)
+		this.handleSubmit = this.handleSubmit.bind(this)
+
 	}
 
 	onVote(vote) {
@@ -25,14 +35,44 @@ class ListPostCommentsItem extends Component {
 
 	handleConfirConfirmDelete = () => {
 		CommentsAPI.del(this.props.comment.id).then(() => {
-			this.props.reloadComments()
+		//	this.props.reloadComments().then(() => (alert("FCPOOOO")))
 			this.setState({openConfirmDelete: false})
 		})
 	}
 
+	handleEdit = () => {
+		this.setState({editing: true, formEdit: {body: this.props.comment.body}})
+	}
+
+	handleEditCancel = () => {
+		 this.setState({editing: false, formEdit: {body: this.props.comment.body, loading: false}})
+	}
+
+	handleFieldChanged(e, {name, value}) {
+		this.setState({formEdit: {body: value, loading: false}})
+	}
+
+	handleSubmit() {
+
+		const
+			{comment} = this.props,
+			{body} = this.state.formEdit
+
+
+		this.setState({formEdit: {loading: true, body}})
+
+
+		CommentsAPI.update(comment.id, {body}).then((r) => {
+			this.props.reloadComments();
+			this.setState({editing: false, formEdit: {body, loading: false}})
+		})
+
+
+		this.setState({editing: true})
+	}
+
 
 	render() {
-
 		const {comment} = this.props
 
 		return (
@@ -44,13 +84,36 @@ class ListPostCommentsItem extends Component {
 						<Comment.Metadata>
 							<span>{comment.timestamp}</span>
 						</Comment.Metadata>
-						<Comment.Text>
+						<Comment.Text hidden={this.state.editing}>
 							{comment.body}
 						</Comment.Text>
-						<Comment.Actions>
-							<a>Reply</a>
-						</Comment.Actions>
-						<Comment.Actions>
+						<Comment.Text hidden={!this.state.editing}>
+							<Form reply onSubmit={this.handleSubmit} loading={this.state.formEdit.loading}>
+
+								<Form.Field
+									name='body'
+									onChange={this.handleFieldChanged}
+									control={TextArea}
+									value={this.state.formEdit.body}
+									placeholder='Body'/>
+
+								<Form.Group inline>
+									<Form.Field
+										type='button'
+										control={Button}
+										onClick={this.handleEditCancel}
+										content='Cancel'/>
+									<Form.Field
+										color='green'
+										disabled={this.state.formEdit.body.length < 1}
+										control={Button}
+										content='Save Changes'/>
+								</Form.Group>
+
+							</Form>
+						</Comment.Text>
+
+						<Comment.Actions hidden={this.state.editing}>
 							<Comment.Action title='Like' onClick={() => this.onVote('upVote')}>
 								<Icon name='like outline' color='blue'/>
 							</Comment.Action>
@@ -61,10 +124,10 @@ class ListPostCommentsItem extends Component {
 								<Icon name='signal' color='brown'/>
 								{comment.voteScore}
 							</Comment.Action>
-							<Comment.Action title='Edit'>
+							<Comment.Action title='Edit' as='a' onClick={this.handleEdit}>
 								<Icon name='edit'/>
 							</Comment.Action>
-							<Comment.Action title='Delete' as='a' onClick={() => this.confirmDeleteShow()}>
+							<Comment.Action title='Delete' as='a' onClick={this.confirmDeleteShow}>
 								<Icon name='trash outline'/>
 							</Comment.Action>
 						</Comment.Actions>
