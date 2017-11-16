@@ -35,7 +35,6 @@ class ListPostComments extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		console.log('componentWillReceiveProps ListPostComments');
 		this.setState({
 			loading: false,
 			fields: {

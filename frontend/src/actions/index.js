@@ -164,7 +164,6 @@ export function fetchPostWithComments() {
 						PostsAPI.getComments(id2)
 					)).then((allComments) => {
 					dispatch(_fetchAllComments([].concat(...allComments)))
-					console.log([].concat(...allComments));
 				})
 
 				dispatch(_fetchPosts(list))

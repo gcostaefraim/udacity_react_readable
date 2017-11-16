@@ -17,53 +17,28 @@ class PostDetails extends Component {
 		//this.props.fetchPostComments(id)
 
 		this.state = {
-			// id,
-			// post: [],
-			// comments: [],
 			openConfirmDelete: false
 		}
 
 	}
 
 
-	/*componentWillReceiveProps(nextProps) {
-		console.log('componentWillReceiveProps PostDetails');
-		console.log(nextProps);
-		const
-			{id} = nextProps.match.params,
-			prevId = this.props.match.params.id,
-			comments = nextProps.comments.listByPostId,
-			posts = nextProps.postListById,
-			{fetchPostComments} = nextProps
-
-		//if (id !== prevId)
-			//fetchPostComments(id)
-
-		this.setState({
-			post: posts && posts[id] ? posts[id] : [],
-			comments: (comments && comments[id]) ? comments[id] : []
+	onVote(vote) {
+		PostAPI.vote(this.props.post.id, vote).then((post) => {
+			this.setState({post})
+			this.props.fetchPosts()
 		})
+	};
 
-	}
-*/
-
-	// onVote(vote) {
-	// 	PostAPI.vote(this.props.post.id, vote).then((post) => {
-	// 		this.setState({post})
-	// 		this.props.fetchPosts()
-	// 	})
-	// };
 
 	confirmDeleteShow = () => this.setState({openConfirmDelete: true})
 
 	handleCancelConfirmDelete = () => this.setState({openConfirmDelete: false})
 
 	handleConfirConfirmDelete = () => {
-		PostAPI.del(this.state.post.id).then(() => {
+		PostAPI.del(this.props.post.id).then(() => {
 			this.props.fetchPosts()
-			this.setState({openConfirmDelete: false})
 			this.props.history.push('/');
-
 		})
 	}
 
