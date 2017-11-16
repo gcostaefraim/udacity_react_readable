@@ -48,3 +48,20 @@ export const create = (data) =>
 		,
 	}).then(res => res.json())
 		.catch(res => res.json());
+
+
+
+export const update = (id, data) =>
+	fetch(`${api}/comments/${id}`, {
+		"method": "PUT",
+		"headers": {
+			...headers,
+			"Content-Type": "application/json",
+		},
+		"body": JSON.stringify({
+			...data,
+			"timestamp": Date.now(),
+		})
+		,
+	}).then(res => res.json())
+		.catch(res => res.json());
