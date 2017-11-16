@@ -5,6 +5,8 @@ import {Divider, Label, Icon, Confirm, Comment, Header, Form, Button} from 'sema
 import * as PostAPI from '../../utils/PostsAPI'
 import ListPostComments from "./ListPostComments";
 
+import moment from 'moment'
+
 class PostDetails extends Component {
 
 
@@ -61,7 +63,7 @@ class PostDetails extends Component {
 					</Label>
 					<Label title='Created at'>
 						<Icon name='time'/>
-						{post.timestamp}
+						{moment(post.timestamp).format("DD/MM/YYYY - HH:mm:ss")}
 					</Label>
 					<Label title='Like' as='a' onClick={() => this.onVote('upVote')}>
 						<Icon name='like outline' color='blue'></Icon>

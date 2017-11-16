@@ -8,8 +8,10 @@ import BodyApp from '../components/BodyApp'
 import {Route} from 'react-router-dom'
 
 
-class App extends Component {
 
+
+
+class App extends Component {
 
 	render() {
 
