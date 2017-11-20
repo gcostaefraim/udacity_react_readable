@@ -35,6 +35,7 @@ class ListPostCommentsItem extends Component {
 
 	handleConfirConfirmDelete = () => {
 		CommentsAPI.del(this.props.comment.id).then(() => {
+			this.props.reloadComments();
 			this.setState({openConfirmDelete: false})
 		})
 	}

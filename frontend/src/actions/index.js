@@ -154,11 +154,6 @@ export function fetchPostWithComments() {
 				let postIds = []
 				list.map((post) => postIds.push(post.id))
 
-				// postIds.map((id2) => {
-				// 	PostsAPI.getComments(id2).then((list) => {
-				// 		dispatch(_fetchPostComments(list))
-				// 	})
-				// })
 				Promise.all(
 					postIds.map((id2) =>
 						PostsAPI.getComments(id2)
