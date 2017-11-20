@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {Icon, Confirm, Comment, Header, Form, Button, TextArea, Message, Input} from 'semantic-ui-react'
 import * as CommentsAPI from '../../utils/CommentsAPI'
 
+import moment from 'moment'
 
 class ListPostCommentsItem extends Component {
 
@@ -16,7 +17,6 @@ class ListPostCommentsItem extends Component {
 			editing: false,
 			openConfirmDelete: false
 		}
-
 
 		this.handleFieldChanged = this.handleFieldChanged.bind(this)
 		this.handleSubmit = this.handleSubmit.bind(this)
@@ -35,7 +35,6 @@ class ListPostCommentsItem extends Component {
 
 	handleConfirConfirmDelete = () => {
 		CommentsAPI.del(this.props.comment.id).then(() => {
-		//	this.props.reloadComments().then(() => (alert("FCPOOOO")))
 			this.setState({openConfirmDelete: false})
 		})
 	}
@@ -72,6 +71,7 @@ class ListPostCommentsItem extends Component {
 	}
 
 
+
 	render() {
 		const {comment} = this.props
 
@@ -82,7 +82,7 @@ class ListPostCommentsItem extends Component {
 					<Comment.Content>
 						<Comment.Author as='a'>{comment.author}</Comment.Author>
 						<Comment.Metadata>
-							<span>{comment.timestamp}</span>
+							<span>{moment(comment.timestamp).format("DD/MM/YYYY - HH:mm:ss")}</span>
 						</Comment.Metadata>
 						<Comment.Text hidden={this.state.editing}>
 							{comment.body}

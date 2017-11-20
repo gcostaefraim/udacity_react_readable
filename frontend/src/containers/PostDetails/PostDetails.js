@@ -5,6 +5,8 @@ import {Divider, Label, Icon, Confirm, Comment, Header, Form, Button} from 'sema
 import * as PostAPI from '../../utils/PostsAPI'
 import ListPostComments from "./ListPostComments";
 
+import moment from 'moment'
+
 class PostDetails extends Component {
 
 
@@ -17,53 +19,28 @@ class PostDetails extends Component {
 		//this.props.fetchPostComments(id)
 
 		this.state = {
-			// id,
-			// post: [],
-			// comments: [],
 			openConfirmDelete: false
 		}
 
 	}
 
 
-	/*componentWillReceiveProps(nextProps) {
-		console.log('componentWillReceiveProps PostDetails');
-		console.log(nextProps);
-		const
-			{id} = nextProps.match.params,
-			prevId = this.props.match.params.id,
-			comments = nextProps.comments.listByPostId,
-			posts = nextProps.postListById,
-			{fetchPostComments} = nextProps
-
-		//if (id !== prevId)
-			//fetchPostComments(id)
-
-		this.setState({
-			post: posts && posts[id] ? posts[id] : [],
-			comments: (comments && comments[id]) ? comments[id] : []
+	onVote(vote) {
+		PostAPI.vote(this.props.post.id, vote).then((post) => {
+			this.setState({post})
+			this.props.fetchPosts()
 		})
+	};
 
-	}
-*/
-
-	// onVote(vote) {
-	// 	PostAPI.vote(this.props.post.id, vote).then((post) => {
-	// 		this.setState({post})
-	// 		this.props.fetchPosts()
-	// 	})
-	// };
 
 	confirmDeleteShow = () => this.setState({openConfirmDelete: true})
 
 	handleCancelConfirmDelete = () => this.setState({openConfirmDelete: false})
 
 	handleConfirConfirmDelete = () => {
-		PostAPI.del(this.state.post.id).then(() => {
+		PostAPI.del(this.props.post.id).then(() => {
 			this.props.fetchPosts()
-			this.setState({openConfirmDelete: false})
 			this.props.history.push('/');
-
 		})
 	}
 
@@ -86,7 +63,7 @@ class PostDetails extends Component {
 					</Label>
 					<Label title='Created at'>
 						<Icon name='time'/>
-						{post.timestamp}
+						{moment(post.timestamp).format("DD/MM/YYYY - HH:mm:ss")}
 					</Label>
 					<Label title='Like' as='a' onClick={() => this.onVote('upVote')}>
 						<Icon name='like outline' color='blue'></Icon>
@@ -111,11 +88,6 @@ class PostDetails extends Component {
 				</div>
 				<div style={{marginTop: 20}}>
 					{post.body}
-
-					<br/>
-					I'm wondering what the best practice is for documenting a React component. I assume just normal JSdoc format
-					for any methods, but what is the best place to capture things like props, redux state, component state (if at
-					all)?
 				</div>
 
 				<ListPostComments

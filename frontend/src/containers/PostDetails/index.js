@@ -42,8 +42,17 @@ class Index extends Component {
 
 
 	render() {
+
+		const showNotFound = Object.keys(this.state.post).length < 1
+
+
+		if (showNotFound) {
+			return (<div>NOT FOUND</div>)
+		}
+
 		return (
 			<PostDetails
+				history={this.props.history}
 				params={this.params}
 				post={this.state.post}
 				comments={this.state.comments}

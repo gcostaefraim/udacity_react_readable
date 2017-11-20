@@ -65,8 +65,8 @@ class ListPostsItem extends Component {
 
 					<Actions>
 						<Button.Group>
-							<Button icon='edit' title='Edit' as={Link} to={`/${post.category}/edit/${post.id}`}></Button>
-							<Button icon='trash outline' onClick={() => this.confirmDeleteShow()} title='Delete'></Button>
+							<Button color='grey' icon='edit' title='Edit' as={Link} to={`/${post.category}/edit/${post.id}`}></Button>
+							<Button color='orange' icon='trash outline' onClick={() => this.confirmDeleteShow()} title='Delete'></Button>
 						</Button.Group>
 					</Actions>
 
