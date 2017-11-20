@@ -28,7 +28,7 @@ const configStore = () => {
 		reducers,
 		initialState,
 		compose(
-			applyMiddleware(thunk)
+			applyMiddleware(thunk),
 		)
 	)
 
