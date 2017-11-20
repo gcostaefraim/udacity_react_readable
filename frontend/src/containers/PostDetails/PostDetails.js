@@ -88,11 +88,6 @@ class PostDetails extends Component {
 				</div>
 				<div style={{marginTop: 20}}>
 					{post.body}
-
-					<br/>
-					I'm wondering what the best practice is for documenting a React component. I assume just normal JSdoc format
-					for any methods, but what is the best place to capture things like props, redux state, component state (if at
-					all)?
 				</div>
 
 				<ListPostComments
