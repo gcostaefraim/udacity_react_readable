@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {fetchPosts, fetchPostComments} from "../../actions"
 import styled from 'styled-components'
 import {Icon, Confirm, Button} from 'semantic-ui-react'
-import * as PostAPI from '../../utils/PostsAPI'
+import {deletePost, votePost} from "../../actions/index";
 
 
 class ListPostsItem extends Component {
@@ -26,18 +26,18 @@ class ListPostsItem extends Component {
 	handleCancelConfirmDelete = () => this.setState({openConfirmDelete: false})
 
 	handleConfirConfirmDelete = () => {
-		PostAPI.del(this.state.post.id).then(() => {
-			this.props.fetchPosts()
+		this.props.deletePost(this.props.post.id).then(() => {
 			this.setState({openConfirmDelete: false})
 		})
 	}
 
 
 	onVote(vote) {
-		PostAPI.vote(this.state.post.id, vote).then((post) => {
+		this.props.votePost(this.state.post.id, vote).then((post) => {
 			this.setState({post})
 			this.props.fetchPosts()
 		})
+
 	};
 
 
@@ -106,6 +106,8 @@ function mapStateToProps(state, props) {
 function mapDispatchToProps(dispatch) {
 	return {
 		fetchPosts: () => dispatch(fetchPosts()),
+		deletePost: (id) => dispatch(deletePost(id)),
+		votePost: (id, vote) => dispatch(votePost(id, vote)),
 	}
 }
 

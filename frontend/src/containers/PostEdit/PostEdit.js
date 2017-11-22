@@ -2,9 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import PostForm from '../PostForm'
 
-import {fetchPosts} from "../../actions/index";
-
-import * as PostsAPI from '../../utils/PostsAPI'
+import {fetchPosts, updatePost} from "../../actions/index";
 
 
 class PostEdit extends Component {
@@ -44,11 +42,12 @@ class PostEdit extends Component {
 
 		const postId = this.props.match.params.id
 
-		PostsAPI.update(postId, fields).then((r) => {
+
+		this.props.updatePost(postId, fields).then((r) => {
 			this.setState({formLoading: false});
-			this.props.fetchPosts()
 			this.props.history.push('/');
 		})
+
 	}
 
 	render() {
@@ -86,6 +85,7 @@ function mapStateToProps({categories, posts}) {
 function mapDispatchToProps(dispatch) {
 	return {
 		fetchPosts: () => dispatch(fetchPosts()),
+		updatePost: (postId, fields) => dispatch(updatePost(postId, fields)),
 	}
 }
 

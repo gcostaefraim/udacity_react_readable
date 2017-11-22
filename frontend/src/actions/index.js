@@ -1,5 +1,6 @@
 import * as CategoriesAPI from '../utils/CategoriesAPI'
 import * as PostsAPI from '../utils/PostsAPI'
+import * as CommentsAPI from '../utils/CommentsAPI'
 
 /*
  * action types
@@ -10,7 +11,6 @@ export const TYPE = {
 	FETCH_POST_COMMENTS: 'FETCH_POST_COMMENTS',
 
 	FETCH_ALL_COMMENTS: 'FETCH_ALL_COMMENTS',
-
 
 	FETCH_POSTS: 'FETCH_POSTS',
 
@@ -140,13 +140,70 @@ export function fetchPosts() {
 	}
 }
 
+
+export function createPost(fields) {
+	return dispatch => {
+		return new Promise((resolve, reject) =>
+			PostsAPI.create(fields).then((r) => {
+				PostsAPI.getAll().then((list) => {
+					dispatch(_fetchPosts(list))
+					resolve()
+				}).catch((err) => reject(err))
+			}).catch((err) => reject(err))
+		)
+	}
+}
+
+export function updatePost(postId, fields) {
+	return dispatch => {
+		return new Promise((resolve, reject) =>
+			PostsAPI.update(postId, fields).then((r) => {
+				PostsAPI.getAll().then((list) => {
+					dispatch(_fetchPosts(list))
+					resolve()
+				}).catch((err) => reject(err))
+			}).catch((err) => reject(err))
+		)
+	}
+}
+
+
+export function deletePost(id) {
+	return dispatch =>
+		new Promise((resolve, reject) =>
+			PostsAPI.del(id).then(() => {
+				PostsAPI.getAll().then((list) => {
+					dispatch(_fetchPosts(list))
+					resolve()
+				}).catch((err) => reject(err))
+			}).catch((err) => reject(err))
+		)
+}
+
+
+export function votePost(id, vote) {
+	return dispatch =>
+		new Promise((resolve, reject) =>
+			PostsAPI.vote(id, vote).then((post) => {
+				PostsAPI.getAll().then((list) => {
+					dispatch(_fetchPosts(list))
+					resolve()
+				}).catch((err) => reject(err))
+			}).catch((err) => reject(err))
+		)
+}
+
+
 export function fetchPostComments(id) {
 	return dispatch => {
-		PostsAPI.getComments(id).then((list) => {
-			dispatch(_fetchPostComments(list))
+		return new Promise((resolve, reject) => {
+			PostsAPI.getComments(id).then((list) => {
+				dispatch(_fetchPostComments(list))
+			}).then(() => resolve()).catch(() => reject())
 		})
 	}
 }
+
 
 export function fetchPostWithComments() {
 	return dispatch => {
@@ -166,3 +223,85 @@ export function fetchPostWithComments() {
 		)
 	}
 }
+
+
+export function deleteComment(comment) {
+	return dispatch => {
+		return new Promise((resolve, reject) => {
+			CommentsAPI.del(comment.id).then(() => {
+
+				PostsAPI.getComments(comment.parentId).then((list) => {
+					dispatch(_fetchPostComments(list))
+				}).then(() => resolve()).catch((err) => reject(err))
+
+			}).catch((err) => reject(err))
+		})
+	}
+}
+
+
+export function voteComment(comment, vote) {
+	return dispatch => {
+		return new Promise((resolve, reject) => {
+			CommentsAPI.vote(comment.id, vote).then(() => {
+
+				PostsAPI.getComments(comment.parentId).then((list) => {
+					dispatch(_fetchPostComments(list))
+				}).then(() => resolve()).catch((err) => reject(err))
+
+			}).catch((err) => reject(err))
+		})
+	}
+}
+
+
+export function updateComment(comment, body) {
+	return dispatch => {
+		return new Promise((resolve, reject) => {
+			CommentsAPI.update(comment.id, {body}).then((r) => {
+
+				PostsAPI.getComments(comment.parentId).then((list) => {
+					dispatch(_fetchPostComments(list))
+				}).then(() => resolve()).catch((err) => reject(err))
+
+			}).catch((err) => reject(err))
+		})
+	}
+}
+
+export function createComment(postId, fields) {
+	return dispatch => {
+		return new Promise((resolve, reject) => {
+			CommentsAPI.create({...fields, parentId: postId}).then((r) => {
+
+				PostsAPI.getComments(postId).then((list) => {
+					dispatch(_fetchPostComments(list))
+				}).then(() => resolve()).catch((err) => reject(err))
+
+			}).catch((err) => reject(err))
+		})
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

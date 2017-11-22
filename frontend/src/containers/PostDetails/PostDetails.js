@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {Divider, Label, Icon, Confirm, Comment, Header, Form, Button} from 'semantic-ui-react'
-import * as PostAPI from '../../utils/PostsAPI'
 import ListPostComments from "./ListPostComments";
 
 import moment from 'moment'
@@ -26,9 +25,8 @@ class PostDetails extends Component {
 
 
 	onVote(vote) {
-		PostAPI.vote(this.props.post.id, vote).then((post) => {
+		this.props.votePost(this.props.post.id, vote).then((post) => {
 			this.setState({post})
-			this.props.fetchPosts()
 		})
 	};
 
@@ -38,8 +36,7 @@ class PostDetails extends Component {
 	handleCancelConfirmDelete = () => this.setState({openConfirmDelete: false})
 
 	handleConfirConfirmDelete = () => {
-		PostAPI.del(this.props.post.id).then(() => {
-			this.props.fetchPosts()
+		this.props.deletePost(this.props.post.id).then(() => {
 			this.props.history.push('/');
 		})
 	}
@@ -94,6 +91,10 @@ class PostDetails extends Component {
 					totalComments={totalComments}
 					comments={comments}
 					postId={post.id}
+					deleteComment={this.props.deleteComment}
+					voteComment={this.props.voteComment}
+					updateComment={this.props.updateComment}
+					createComment={this.props.createComment}
 					reloadComments={() => this.props.fetchPostComments(post.id)}/>
 
 				{/* Modal Confirm to Delete Post*/}

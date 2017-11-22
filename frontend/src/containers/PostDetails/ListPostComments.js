@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {Icon, Confirm, Comment, Header, Form, Button, TextArea, Message, Input} from 'semantic-ui-react'
 
-import * as CommentsAPI from '../../utils/CommentsAPI'
 import ListPostCommentsItem from "./ListPostCommentsItem";
 
 
@@ -66,11 +65,16 @@ class ListPostComments extends Component {
 
 		this.setState({loading: true});
 
-		CommentsAPI.create({...fields, parentId: postId}).then((r) => {
-			this.props.reloadComments()
+		this.props.createComment(postId, fields).then((r) => {
 			this.setState({loading: false});
 			this.resetForm();
 		})
+
+		/*CommentsAPI.create({...fields, parentId: postId}).then((r) => {
+			this.props.reloadComments()
+			this.setState({loading: false});
+			this.resetForm();
+		})*/
 	}
 
 	handleValidation(e) {
@@ -139,6 +143,9 @@ class ListPostComments extends Component {
 					<ListPostCommentsItem
 						key={comment.id}
 						comment={comment}
+						deleteComment={() => this.props.deleteComment(comment)}
+						voteComment={(vote) => this.props.voteComment(comment, vote)}
+						updateComment={(body) => this.props.updateComment(comment, body)}
 						reloadComments={this.props.reloadComments}/>
 				)}
 
