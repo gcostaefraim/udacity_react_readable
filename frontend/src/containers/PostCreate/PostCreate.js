@@ -3,9 +3,7 @@ import {Redirect} from 'react-router'
 import {connect} from 'react-redux'
 import PostForm from '../PostForm'
 
-import {fetchPosts} from "../../actions/index";
-
-import * as PostsAPI from '../../utils/PostsAPI'
+import {fetchPosts, createPost} from "../../actions/index";
 
 
 class PostCreate extends Component {
@@ -27,8 +25,14 @@ class PostCreate extends Component {
 
 		this.setState({formLoading: true});
 
-		PostsAPI.create(fields).then((r) => {
+/*		PostsAPI.create(fields).then((r) => {
 			this.props.fetchPosts()
+			this.setState({formLoading: false});
+			this.props.history.goBack();
+		})*/
+
+
+		this.props.createPost(fields).then((r) => {
 			this.setState({formLoading: false});
 			this.props.history.goBack();
 		})
@@ -65,6 +69,7 @@ function mapStateToProps({categories}) {
 function mapDispatchToProps(dispatch) {
 	return {
 		fetchPosts: () => dispatch(fetchPosts()),
+		createPost: (fields) => dispatch(createPost(fields)),
 	}
 }
 

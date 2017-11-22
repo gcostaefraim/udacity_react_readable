@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import {Icon, Confirm, Comment, Header, Form, Button, TextArea, Message, Input} from 'semantic-ui-react'
-import * as CommentsAPI from '../../utils/CommentsAPI'
 
 import moment from 'moment'
 
@@ -24,9 +23,9 @@ class ListPostCommentsItem extends Component {
 	}
 
 	onVote(vote) {
-		CommentsAPI.vote(this.props.comment.id, vote).then((post) => {
-			this.props.reloadComments()
+		this.props.voteComment(vote).then(() => {
 		})
+
 	};
 
 	confirmDeleteShow = () => this.setState({openConfirmDelete: true})
@@ -34,10 +33,7 @@ class ListPostCommentsItem extends Component {
 	handleCancelConfirmDelete = () => this.setState({openConfirmDelete: false})
 
 	handleConfirConfirmDelete = () => {
-		CommentsAPI.del(this.props.comment.id).then(() => {
-			this.props.reloadComments();
-			this.setState({openConfirmDelete: false})
-		})
+		this.props.deleteComment().then(() => alert("Será?"))
 	}
 
 	handleEdit = () => {
@@ -62,11 +58,10 @@ class ListPostCommentsItem extends Component {
 		this.setState({formEdit: {loading: true, body}})
 
 
-		CommentsAPI.update(comment.id, {body}).then((r) => {
-			this.props.reloadComments();
+
+		this.props.updateComment(body).then((r) => {
 			this.setState({editing: false, formEdit: {body, loading: false}})
 		})
-
 
 		this.setState({editing: true})
 	}

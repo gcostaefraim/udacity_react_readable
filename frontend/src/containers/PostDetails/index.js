@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import PostDetails from './PostDetails'
 import {connect} from 'react-redux'
 import {fetchPosts, fetchPostComments} from '../../actions'
+import {createComment, deleteComment, deletePost, updateComment, voteComment, votePost} from "../../actions/index";
 
 
 class Index extends Component {
@@ -58,6 +59,12 @@ class Index extends Component {
 				comments={this.state.comments}
 				fetchPosts={this.props.fetchPosts}
 				fetchPostComments={this.props.fetchPostComments}
+				deleteComment={this.props.deleteComment}
+				deletePost={this.props.deletePost}
+				votePost={this.props.votePost}
+				voteComment={this.props.voteComment}
+				updateComment={this.props.updateComment}
+				createComment={this.props.createComment}
 			/>
 		)
 	}
@@ -90,6 +97,12 @@ function mapDispatchToProps(dispatch) {
 	return {
 		fetchPosts: () => dispatch(fetchPosts()),
 		fetchPostComments: (id) => dispatch(fetchPostComments(id)),
+		deleteComment: (id) => dispatch(deleteComment(id)),
+		deletePost: (id) => dispatch(deletePost(id)),
+		votePost: (id, vote) => dispatch(votePost(id, vote)),
+		voteComment: (comment, vote) => dispatch(voteComment(comment, vote)),
+		updateComment: (comment, body) => dispatch(updateComment(comment, body)),
+		createComment: (postId, fields) => dispatch(createComment(postId, fields)),
 	}
 }
 
